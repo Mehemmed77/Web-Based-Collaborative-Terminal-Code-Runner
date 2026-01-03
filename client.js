@@ -26,12 +26,13 @@ function connect() {
     statusText.style.color = "green";
   };
 
-  ws.onerror = (error) => {
+  ws.onerror = (_) => {
     statusText.textContent = "Connection error";
     statusText.style.color = "red";
   };
 
   ws.onmessage = (event) => {
+    console.log(event.data);
     const newMessage = document.createElement("div");
     newMessage.textContent = event.data;
     messages.appendChild(newMessage);

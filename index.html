@@ -7,10 +7,12 @@
   </head>
   <body>
     <div id="status">Press button to connect</div>
-    <div id="messages"></div>
+    <div id="messages">
+      Command history: <br>
+    </div>
     <div>
       <input type="text" id="messageInput" placeholder="Type your message" />
-      <button onclick="sendMessage()">Send</button>
+      <button onclick="sendMessage()">Write command</button>
     </div>
 
     <button onclick="connect()">Connect</button>
