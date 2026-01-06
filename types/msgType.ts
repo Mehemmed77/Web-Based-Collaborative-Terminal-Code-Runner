@@ -1,0 +1,1 @@
+export type msgType = "JOIN_ROOM" | "CREATE_ROOM";
