@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Mehemmed77/Web-Based-Collaborative-Terminal-Code-Runner#readme",
   "dependencies": {
+    "nanoid": "^5.1.6",
     "uuid": "^13.0.0",
     "ws": "^8.18.3"
   },

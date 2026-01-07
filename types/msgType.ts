@@ -1,1 +1,6 @@
-export type msgType = "JOIN_ROOM" | "CREATE_ROOM";
+export type Message = {
+    msgType: "PLAIN_TEXT" | "JOIN_ROOM" | "CREATE_ROOM";
+    payload?: any;
+};
+
+
