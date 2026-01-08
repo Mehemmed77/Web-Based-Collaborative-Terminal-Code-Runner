@@ -1,57 +1,73 @@
-import { rooms } from "./server.ts";
+import { activeSockets, rooms } from "./server.ts";
 import { nanoid } from "nanoid";
 import { Message } from "./types/msgType.ts";
 import { ClientSocket } from "./types/clientSocket.ts";
+import deleteRoomIfEmpty from "./utils/deleteRoomIfEmpty.ts";
 
 export default function messageManager(msg: Message, ws: ClientSocket) {
   switch (msg.msgType) {
     case "PLAIN_TEXT": {
-
-        break;
+      break;
     }
 
     case "JOIN_ROOM": {
-        if (!msg.payload) {
-            ws.send("Room ID cannot be empty");
-            return;
+      if (!msg.payload) {
+        ws.send("Room ID cannot be empty");
+        return;
+      }
+
+      const socket = activeSockets.get(ws.id);
+
+      if (socket?.hasJoinedRoom && socket.roomId) {
+        if (socket.roomId === msg.payload) ws.send("You have already joined this room");
+        else {
+          rooms.get(socket.roomId)?.clients.delete(ws.id);
+
+          if (!deleteRoomIfEmpty(socket.roomId)) {
+            broadcastToAll(socket.roomId,"User has left");
+          }
         }
+      }
 
-        const roomId = msg.payload;
+      const roomId = msg.payload;
 
-        const room = rooms.get(roomId);
-        if (room === undefined) {
-            ws.send("Couldn't find specified room");
-            return;
-        }
+      const room = rooms.get(roomId);
+      if (room === undefined) {
+        ws.send("Couldn't find specified room");
+        return;
+      }
 
-        room.clients.push(ws);
+      activeSockets.set(ws.id, { hasJoinedRoom: true, roomId: roomId });
 
-        rooms.set(roomId, room);
+      room.clients.set(ws.id, ws);
 
-        broadcastToAll(roomId, "New user has joined");
+      rooms.set(roomId, room);
 
-        break;
+      broadcastToAll(roomId, "New user has joined");
+
+      break;
     }
 
     case "CREATE_ROOM": {
-        console.log('salam');
-        const roomId = nanoid(10);
-  
-        rooms.set(roomId, { roomId: roomId, clients: [ws] });
-  
-        console.log(roomId);
-  
-        break;
+      const roomId = nanoid(10);
+
+      const clients = new Map<string, ClientSocket>();
+      clients.set(ws.id, ws);
+
+      rooms.set(roomId, { roomId: roomId, clients: clients });
+
+      console.log(roomId);
+
+      break;
     }
   }
 }
 
-
 function broadcastToAll(roomId: string, message: string) {
-    const room = rooms.get(roomId);
-    if (room === undefined) return;
+  const room = rooms.get(roomId);
+  if (room === undefined) return;
 
-    room.clients.forEach(client => {
-        client.send(message);
-    });
+  room.clients.forEach((client) => {
+    client.send(message);
+  });
 }

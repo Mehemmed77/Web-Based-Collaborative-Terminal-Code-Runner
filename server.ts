@@ -1,23 +1,33 @@
 import WebSocket, { WebSocketServer } from "ws";
-import { ClientSocket, Room } from "./types/clientSocket.ts";
+import { ClientSocket, clientState, Room } from "./types/clientSocket.ts";
 import { v4 as id } from "uuid";
 import messageManager from "./messageManager.ts";
 import { Message } from "./types/msgType.ts";
+import cleanup from "./utils/cleanup.ts";
 
 const server = new WebSocketServer({ port: 8000 });
 
+export const activeSockets = new Map<string, clientState>();
 export const rooms = new Map<string, Room>();
 
 server.on("connection", (ws: ClientSocket) => {
-  ws.on("message", (data) => {
-    const message = JSON.parse(Buffer.isBuffer(data) ? data.toString("utf-8") : data.toString()) as Message;
+  const newId = id();
+  ws.id = newId;
 
-    ws.id = id();
+  activeSockets.set(newId, { hasJoinedRoom: false, roomId: null });
+
+  ws.on("close", () => {
+    cleanup(ws.id);
+  });
+
+  ws.on("message", (data) => {
+    const message = JSON.parse(
+      Buffer.isBuffer(data) ? data.toString("utf-8") : data.toString()
+    ) as Message;
 
     messageManager(message, ws);
   });
 });
-
 
 // console.log("Connection established");
 
