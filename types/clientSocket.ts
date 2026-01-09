@@ -6,7 +6,6 @@ export interface ClientSocket extends WebSocket {
 
 export interface Room {
     roomId: string;
-    isClosed?: boolean;
     clients: Map<string, ClientSocket>;
 }
 

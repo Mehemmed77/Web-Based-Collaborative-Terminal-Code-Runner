@@ -1,14 +1,14 @@
 import WebSocket, { WebSocketServer } from "ws";
 import { ClientSocket, clientState, Room } from "./types/clientSocket.ts";
 import { v4 as id } from "uuid";
-import messageManager from "./messageManager.ts";
+import messageManager from "./msgManager/index.ts";
 import { Message } from "./types/msgType.ts";
 import cleanup from "./utils/cleanup.ts";
 
 const server = new WebSocketServer({ port: 8000 });
 
 export const activeSockets = new Map<string, clientState>();
-export const rooms = new Map<string, Room>();
+export const activeRooms = new Map<string, Room>();
 
 server.on("connection", (ws: ClientSocket) => {
   const newId = id();
@@ -28,45 +28,3 @@ server.on("connection", (ws: ClientSocket) => {
     messageManager(message, ws);
   });
 });
-
-// console.log("Connection established");
-
-// const newId = id();
-// ws.id = newId;
-
-// const role = clients.size === 0 ? "author" : "user";
-// ownership.set(newId, role);
-
-// clients.add(ws);
-
-// ws.send(`You are ${role}.`);
-
-// commandHistory.forEach((command) => ws.send(command));
-
-// ws.on("message", (data) => {
-//   if (ownership.get(ws.id) !== "author") return;
-
-//   const message = Buffer.isBuffer(data)
-//     ? data.toString("utf-8")
-//     : data.toString();
-//   commandHistory.push(message);
-
-//   clients.forEach((client) => {
-//     if (client.readyState === WebSocket.OPEN) client.send(message);
-//   });
-// });
-
-// ws.on("close", () => {
-//   clients.delete(ws);
-//   ownership.delete(ws.id);
-
-//   if (clients.size > 0) {
-//     const temp = Array.from(clients);
-//     ownership.set(temp[0].id, "author");
-//     temp[0].send("You are author.");
-//   }
-
-//   console.log("Client disconnected");
-// });
-
-// ws.on("error", console.error);

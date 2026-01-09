@@ -1,9 +1,9 @@
-import { rooms } from "../server.ts";
+import { activeRooms } from "../server.ts";
 
 export default function deleteRoomIfEmpty(roomId: string) {
-    if(rooms.get(roomId)?.clients.size === 0) {
-        rooms.delete(roomId);
-        return true;
+    if(activeRooms.get(roomId)?.clients.size === 0) {
+        return activeRooms.delete(roomId);
     };
+
     return false;
 }
