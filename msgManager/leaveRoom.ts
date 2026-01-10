@@ -11,4 +11,5 @@ export default function leaveRoom(roomId: string, clientId: string) {
     if(!deleteRoomIfEmpty(roomId)) {
         broadcast(roomId, "User has left room");
     }
+
 }
