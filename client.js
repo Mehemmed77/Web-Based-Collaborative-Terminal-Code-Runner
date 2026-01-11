@@ -7,26 +7,42 @@ let ws = new WebSocket("ws://localhost:8000");
 
 const input = document.getElementById("room-input");
 
-ws.onmessage = function(event) {
-    console.log(event.data);
-    const p = document.createElement("p");
-    p.textContent = event.data;
-    messageContainer.appendChild(p);
+function getSessionId() {
+  let uuid = localStorage.getItem("sessionId");
+  if (uuid === null) {
+    uuid = crypto.randomUUID();
+    localStorage.setItem("sessionId", uuid);
+  }
+
+  return uuid;
 }
 
+ws.onmessage = function (event) {
+  console.log(event.data);
+  const p = document.createElement("p");
+  p.textContent = event.data;
+  messageContainer.appendChild(p);
+};
+
 function join() {
-    ws.send(
-        JSON.stringify({
-            msgType: "JOIN_ROOM",
-            payload: messageInput.value,
-        })
-    )
+  ws.send(
+    JSON.stringify({
+      msgType: "JOIN_ROOM",
+      payload: {
+        content: messageInput.value,
+        sessionId: getSessionId(),
+      },
+    })
+  );
 }
 
 function createRoom() {
   ws.send(
     JSON.stringify({
       msgType: "CREATE_ROOM",
+      payload: {
+        sessionId: getSessionId(),
+      },
     })
   );
 }

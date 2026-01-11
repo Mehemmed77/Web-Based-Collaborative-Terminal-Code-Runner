@@ -3,6 +3,8 @@ import deleteRoomIfEmpty from "../utils/deleteRoomIfEmpty.ts";
 import broadcast from "./broadcast.ts";
 
 export default function leaveRoom(roomId: string, clientId: string) {
+    if (roomId === "") return;
+
     const room = activeRooms.get(roomId);
     if(room == null) return;
 

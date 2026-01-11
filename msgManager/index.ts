@@ -11,7 +11,7 @@ export default function messageManager(msg: Message, ws: ClientSocket) {
     }
 
     case "LEAVE_ROOM": {
-      leaveRoom(msg.payload, ws.id);
+      leaveRoom(msg.payload.content ?? "", ws.id);
       break;
     }
 
@@ -21,7 +21,7 @@ export default function messageManager(msg: Message, ws: ClientSocket) {
     }
 
     case "CREATE_ROOM": {
-      createRoom(ws);
+      createRoom(ws, msg.payload);
       break;
     }
   }

@@ -1,3 +1,4 @@
+import "dotenv/config";
 import WebSocket, { WebSocketServer } from "ws";
 import { ClientSocket, clientState, Room } from "./types/clientSocket.ts";
 import { v4 as id } from "uuid";
