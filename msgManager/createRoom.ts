@@ -5,10 +5,8 @@ import { pool } from "../db.ts";
 import { Payload } from "../types/msgType.ts";
 import * as fsPromises from 'fs/promises';
 import * as path from 'path';
-import { fileURLToPath } from "url";
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const projectRoot = process.cwd();
 
 export default async function createRoom(ws: ClientSocket, payload: Payload) {
   if (payload.sessionId === "") return;
@@ -30,7 +28,7 @@ export default async function createRoom(ws: ClientSocket, payload: Payload) {
 
     console.log(roomId);
 
-    const folderPath = path.join(__dirname, "workspaces", roomId);
+    const folderPath = path.join(projectRoot, "workspaces", roomId);
     await fsPromises.mkdir(folderPath, { recursive: true });
 
   } catch (e: any) {

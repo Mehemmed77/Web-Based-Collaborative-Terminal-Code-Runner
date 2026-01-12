@@ -7,7 +7,7 @@
   </head>
   <body>
     <div>
-      <button onclick="createRoom()">Create New Room</button>
+      <button onclick="createRoom()" type="button">Create New Room</button>
       <br>
 
       <input type="text" placeholder="type room id" id="roomInput">
@@ -16,6 +16,12 @@
 
       <div id="messageContainer">
         Messages:
+      </div>
+
+      <div id="createFileContainer" style="display: none;">
+        <p>Create File</p>
+        <input type="text" id="fileNameInput" placeholder="File Name">
+        <button type="button" onclick="createFile()">send it to server</button>
       </div>
 
     </div>

@@ -4,7 +4,7 @@ export type Payload = {
 }
 
 export type Message = {
-    msgType: "PLAIN_TEXT" | "JOIN_ROOM" | "CREATE_ROOM" | "LEAVE_ROOM";
+    msgType: "PLAIN_TEXT" | "JOIN_ROOM" | "CREATE_ROOM" | "LEAVE_ROOM" | "CREATE_FILE";
     payload: Payload;
 };
 

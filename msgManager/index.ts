@@ -3,6 +3,7 @@ import { ClientSocket } from "../types/clientSocket.ts";
 import joinRoom from "./joinRoom.ts";
 import createRoom from "./createRoom.ts";
 import leaveRoom from "./leaveRoom.ts";
+import createFile from "./createFile.ts";
 
 export default function messageManager(msg: Message, ws: ClientSocket) {
   switch (msg.msgType) {
@@ -24,5 +25,10 @@ export default function messageManager(msg: Message, ws: ClientSocket) {
       createRoom(ws, msg.payload);
       break;
     }
+
+    case "CREATE_FILE": {
+      createFile(msg, ws);
+      break;
+    }    
   }
 }

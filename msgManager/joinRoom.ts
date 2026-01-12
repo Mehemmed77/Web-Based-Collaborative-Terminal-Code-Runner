@@ -4,7 +4,6 @@ import { Message } from "../types/msgType.ts";
 import broadcast from "./broadcast.ts";
 import ensureNotInAnotherRoom from "./ensureNotInAnotherRoom.ts";
 import roomExistsInDb from "./findRoom.ts";
-import leaveRoom from "./leaveRoom.ts";
 
 export default async function joinRoom(msg: Message, ws: ClientSocket) {
   if (!msg.payload.content) {

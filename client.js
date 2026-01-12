@@ -2,6 +2,8 @@ const statusText = document.getElementById("status");
 const messages = document.getElementById("messages");
 const messageInput = document.getElementById("roomInput");
 const messageContainer = document.getElementById("messageContainer");
+const createFileContainer = document.getElementById("createFileContainer");
+const fileInput = document.getElementById("fileNameInput");
 
 let ws = new WebSocket("ws://localhost:8000");
 
@@ -34,6 +36,7 @@ function join() {
       },
     })
   );
+  createFileContainer.style.display = "block";
 }
 
 function createRoom() {
@@ -45,4 +48,17 @@ function createRoom() {
       },
     })
   );
+  createFileContainer.style.display = "block";
+}
+
+function createFile() {
+  ws.send(
+    JSON.stringify({
+      msgType: "CREATE_FILE",
+      payload: {
+        sessionId: getSessionId(),
+        content: fileInput.value
+      }
+    })
+  )
 }
