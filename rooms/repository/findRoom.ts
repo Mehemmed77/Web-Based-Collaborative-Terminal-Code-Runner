@@ -1,4 +1,4 @@
-import { pool } from "../db.ts";
+import { pool } from "../../db.ts";
 
 export default async function roomExistsInDb(roomId: string) {
     try{

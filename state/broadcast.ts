@@ -1,4 +1,4 @@
-import { activeRooms } from "../server.ts";
+import { activeRooms } from "./activeRoom.ts";
 
 export default function broadcast(roomId: string, message: string) {
   const room = activeRooms.get(roomId);

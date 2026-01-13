@@ -1,9 +1,9 @@
-import { Message } from "../types/msgType.ts";
-import { ClientSocket } from "../types/clientSocket.ts";
-import joinRoom from "./joinRoom.ts";
-import createRoom from "./createRoom.ts";
-import leaveRoom from "./leaveRoom.ts";
-import createFile from "./createFile.ts";
+import createFile from "./files/services/createFile.ts";
+import createRoom from "./rooms/services/createRoom.ts";
+import joinRoom from "./rooms/services/joinRoom.ts";
+import leaveRoom from "./rooms/services/leaveRoom.ts";
+import { Message } from "./shared/protocol.ts";
+import { ClientSocket } from "./ws/socket.ts";
 
 export default function messageManager(msg: Message, ws: ClientSocket) {
   switch (msg.msgType) {
@@ -29,6 +29,6 @@ export default function messageManager(msg: Message, ws: ClientSocket) {
     case "CREATE_FILE": {
       createFile(msg, ws);
       break;
-    }    
+    }
   }
 }

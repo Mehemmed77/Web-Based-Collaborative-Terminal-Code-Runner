@@ -1,4 +1,5 @@
-import { activeSockets, activeRooms } from "../server.ts";
+import { activeRooms } from "./activeRoom.ts";
+import { activeSockets } from "./activeSockets.ts";
 
 export default function cleanup(clientId: string) {
     const roomId = activeSockets.get(clientId)?.roomId;

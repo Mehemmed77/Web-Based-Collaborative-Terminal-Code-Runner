@@ -1,4 +1,4 @@
-import { activeSockets } from "../server.ts";
+import { activeSockets } from "../../state/activeSockets.ts";
 import leaveRoom from "./leaveRoom.ts";
 
 export default function ensureNotInAnotherRoom(clientId: string, roomId: string) {

@@ -1,9 +1,10 @@
-import { activeSockets, activeRooms } from "../server.ts";
-import { ClientSocket } from "../types/clientSocket.ts";
-import { Message } from "../types/msgType.ts";
-import broadcast from "./broadcast.ts";
+import { Message } from "../../shared/protocol.ts";
+import { activeRooms } from "../../state/activeRoom.ts";
+import { activeSockets } from "../../state/activeSockets.ts";
+import broadcast from "../../state/broadcast.ts";
+import { ClientSocket } from "../../ws/socket.ts";
+import roomExistsInDb from "../repository/findRoom.ts";
 import ensureNotInAnotherRoom from "./ensureNotInAnotherRoom.ts";
-import roomExistsInDb from "./findRoom.ts";
 
 export default async function joinRoom(msg: Message, ws: ClientSocket) {
   if (!msg.payload.content) {
@@ -16,8 +17,8 @@ export default async function joinRoom(msg: Message, ws: ClientSocket) {
   const roomExists = await roomExistsInDb(msg.payload.content);
 
   if (!roomExists) {
-      ws.send("Couldn't find specified room");
-      return;
+    ws.send("Couldn't find specified room");
+    return;
   }
 
   const roomId = msg.payload.content;
@@ -27,10 +28,13 @@ export default async function joinRoom(msg: Message, ws: ClientSocket) {
     return;
   }
 
-  let room = activeRooms.get(roomId) ?? {roomId: roomId, clients: new Map<string, ClientSocket>()};
+  let room = activeRooms.get(roomId) ?? {
+    roomId: roomId,
+    clients: new Map<string, ClientSocket>(),
+  };
 
   room.clients.set(ws.id, ws);
-  
+
   activeSockets.set(ws.id, { hasJoinedRoom: true, roomId: roomId });
   activeRooms.set(roomId, room);
 

@@ -1,10 +1,11 @@
+import * as fsPromises from "fs/promises";
+import * as path from "path";
+import { ClientSocket } from "../../ws/socket.ts";
+import { Payload } from "../../shared/protocol.ts";
 import { nanoid } from "nanoid";
-import { ClientSocket } from "../types/clientSocket.ts";
-import { activeRooms, activeSockets } from "../server.ts";
-import { pool } from "../db.ts";
-import { Payload } from "../types/msgType.ts";
-import * as fsPromises from 'fs/promises';
-import * as path from 'path';
+import { pool } from "../../db.ts";
+import { activeSockets } from "../../state/activeSockets.ts";
+import { activeRooms } from "../../state/activeRoom.ts";
 
 const projectRoot = process.cwd();
 
@@ -30,7 +31,6 @@ export default async function createRoom(ws: ClientSocket, payload: Payload) {
 
     const folderPath = path.join(projectRoot, "workspaces", roomId);
     await fsPromises.mkdir(folderPath, { recursive: true });
-
   } catch (e: any) {
     console.log("Some error occurred: " + e);
   }
