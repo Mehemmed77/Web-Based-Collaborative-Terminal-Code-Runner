@@ -5,12 +5,18 @@ import deleteFileFromDisk, { insertFileToDisk } from "../fs.ts";
 import { determineFileExtension } from "../validation.ts";
 import writeFileToDB from "../repository/writeFileToDB.ts";
 import { fileCreationErrors } from "../types.ts";
+import { isCreateFilePayload } from "../utils.ts";
 
 export default async function createFile(msg: Message, ws: ClientSocket) {
   const roomId = activeSockets.get(ws.id)?.roomId;
   if (roomId == null) return;
 
-  const fileName = msg.payload.content ?? "";
+  if (msg.msgType !== "CREATE_FILE" || !isCreateFilePayload(msg.payload)) {
+    ws.send("Invalid create file payload");
+    return;
+  }
+
+  const fileName = msg.payload.fileName ?? "";
 
   const regEx = /^[a-zA-Z0-9._-]+\.(py|txt)$/;
   if (!regEx.test(fileName)) {

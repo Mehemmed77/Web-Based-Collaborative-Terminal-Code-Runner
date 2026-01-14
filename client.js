@@ -5,6 +5,9 @@ const messageContainer = document.getElementById("messageContainer");
 const createFileContainer = document.getElementById("createFileContainer");
 const fileInput = document.getElementById("fileNameInput");
 
+const usernameInput = document.getElementById("usernameInput");
+const passwordInput = document.getElementById("passwordInput");
+
 let ws = new WebSocket("ws://localhost:8000");
 
 const input = document.getElementById("room-input");
@@ -25,6 +28,10 @@ ws.onmessage = function (event) {
   p.textContent = event.data;
   messageContainer.appendChild(p);
 };
+
+function register() {
+  
+}
 
 function join() {
   ws.send(

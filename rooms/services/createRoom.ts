@@ -1,25 +1,29 @@
 import * as fsPromises from "fs/promises";
 import * as path from "path";
 import { ClientSocket } from "../../ws/socket.ts";
-import { Payload } from "../../shared/protocol.ts";
 import { nanoid } from "nanoid";
 import { pool } from "../../db.ts";
 import { activeSockets } from "../../state/activeSockets.ts";
 import { activeRooms } from "../../state/activeRoom.ts";
+import { Message } from "../../shared/protocol.ts";
+import { isCreateRoomPayload } from "../utils.ts";
 
 const projectRoot = process.cwd();
 
-export default async function createRoom(ws: ClientSocket, payload: Payload) {
-  if (payload.sessionId === "") return;
+export default async function createRoom(msg: Message, ws: ClientSocket) {
+  if (msg.msgType !== "CREATE_ROOM" || !isCreateRoomPayload(msg.payload)) {
+    ws.send("Invalid createRoom payload")
+    return;
+  }
 
   try {
     const roomId = nanoid(10);
 
     const clients = new Map<string, ClientSocket>();
 
-    await pool.query("INSERT INTO rooms (room_id, owner_session_id) VALUES($1, $2)", [
+    await pool.query("INSERT INTO rooms (room_id, owner_user_id) VALUES($1, $2)", [
       roomId,
-      payload.sessionId,
+      msg.payload.ownerUserId,
     ]);
 
     clients.set(ws.id, ws);
