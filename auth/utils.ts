@@ -13,3 +13,7 @@ export function isLoginPayload(payload: any) {
         typeof payload.password === "string" 
     )
 }
+
+export function setSessionToken(sessionId: string) {
+    
+}

@@ -16,7 +16,8 @@ export const userQueryMessages = {
     "USER_NOT_FOUND": ""
 }
 
-export const userInsertionMessages = {
+export const insertionMessages = {
     "UNEXPECTED_ERROR": "Some error occurred, Try again please :(",
+    "DUPLICATE": "This magnificent username is already taken",
     "DONE": ""
 }

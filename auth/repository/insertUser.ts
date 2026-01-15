@@ -1,12 +1,17 @@
 import { pool } from "../../db.ts";
 
-export default async function insertUser(username: string, password: string) {
-    try {
-        await pool.query("INSERT INTO users (username, password_hash) VALUES ($1, $2)", [username, password]);
-        return "DONE";
-    }
+export default async function insertUser(userId: string, username: string, password: string) {
+  try {
+    await pool.query("INSERT INTO users (id, username, password_hash) VALUES ($1, $2, $3)", [
+      userId,
+      username,
+      password,
+    ]);
 
-    catch(e) {
-        return "UNEXPECTED_ERROR"
-    }
+    return "DONE";
+  } catch (e: any) {
+    if (e.code === "23505") return "DUPLICATE";
+
+    return "UNEXPECTED_ERROR";
+  }
 }
