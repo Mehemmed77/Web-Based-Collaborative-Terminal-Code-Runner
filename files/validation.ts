@@ -3,5 +3,3 @@ export function determineFileExtension(filename: string) {
 
     return arr[arr.length - 1];
 }
-
-

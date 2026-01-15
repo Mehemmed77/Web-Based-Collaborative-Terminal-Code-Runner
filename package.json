@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Mehemmed77/Web-Based-Collaborative-Terminal-Code-Runner#readme",
   "dependencies": {
+    "bcrypt-ts": "^8.0.0",
     "dotenv": "^17.2.3",
     "nanoid": "^5.1.6",
     "pg": "^8.16.3",
