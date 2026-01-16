@@ -23,7 +23,7 @@ export default async function joinRoom(msg: Message, ws: ClientSocket) {
     return;
   }
 
-  if (!ensureNotInAnotherRoom(ws.id, roomId)) {
+  if (!ensureNotInAnotherRoom(msg, ws)) {
     ws.send("You have already joined this room");
     return;
   }

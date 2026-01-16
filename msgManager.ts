@@ -1,3 +1,5 @@
+import login from "./auth/services/login.ts";
+import register from "./auth/services/register.ts";
 import createFile from "./files/services/createFile.ts";
 import createRoom from "./rooms/services/createRoom.ts";
 import joinRoom from "./rooms/services/joinRoom.ts";
@@ -11,7 +13,13 @@ export default function messageManager(msg: Message, ws: ClientSocket) {
       break;
     }
 
+    case "LOGIN": {
+      login(msg, ws);
+      break;
+    }
+
     case "REGISTER": {
+      register(msg, ws);
       break;
     }
 

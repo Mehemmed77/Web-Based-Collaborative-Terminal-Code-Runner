@@ -30,7 +30,27 @@ ws.onmessage = function (event) {
 };
 
 function register() {
-  
+  ws.send(
+    JSON.stringify({
+      msgType: "REGISTER",
+      payload: {
+        username: usernameInput.value,
+        password: passwordInput.value
+      }
+    })
+  )
+}
+
+function login() {
+  ws.send(
+    JSON.stringify({
+      msgType: "LOGIN",
+      payload: {
+        username: usernameInput.value,
+        password: passwordInput.value,
+      }
+    })
+  )
 }
 
 function join() {
