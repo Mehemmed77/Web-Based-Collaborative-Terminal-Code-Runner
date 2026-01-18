@@ -4,7 +4,7 @@
   "description": "Real-time collaborative terminal where one user edits and executes code while others observe the same execution live.",
   "main": "client.js",
   "scripts": {
-    "dev": "node --no-warnings --loader ts-node/esm server.ts",
+    "dev": "node --loader ts-node/esm src/server.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -21,13 +21,17 @@
   "homepage": "https://github.com/Mehemmed77/Web-Based-Collaborative-Terminal-Code-Runner#readme",
   "dependencies": {
     "bcrypt-ts": "^8.0.0",
+    "cors": "^2.8.5",
     "dotenv": "^17.2.3",
+    "express": "^5.2.1",
     "nanoid": "^5.1.6",
     "pg": "^8.16.3",
     "uuid": "^13.0.0",
     "ws": "^8.18.3"
   },
   "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
     "@types/node": "^25.0.3",
     "@types/pg": "^8.16.0",
     "@types/ws": "^8.18.1",

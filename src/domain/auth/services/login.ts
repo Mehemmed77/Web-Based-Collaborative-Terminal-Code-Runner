@@ -8,7 +8,6 @@ import { insertionMessages } from "../types.ts";
 
 export default async function login(msg: Message, ws: ClientSocket) {
   if (msg.msgType !== "LOGIN" || !isLoginPayload(msg.payload)) {
-    ws.send("Invalid Login Payload");
     return;
   }
 
@@ -18,7 +17,6 @@ export default async function login(msg: Message, ws: ClientSocket) {
   const user = await findUser(username);
 
   if (user?.rowCount === 0) {
-    ws.send("Username or password incorrect");
     return;
   }
 
