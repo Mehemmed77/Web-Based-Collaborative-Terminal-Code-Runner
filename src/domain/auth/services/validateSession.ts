@@ -1,9 +1,7 @@
-import { activeSockets } from "@/shared/state/activeSockets.ts";
 import findSession from "../repository/findSession.ts";
 import refreshSession from "../repository/refreshSession.ts";
 
-export default async function validateSession(clientId: string, sessionId: string) {
-  if (activeSockets.get(clientId)?.hasJoinedRoom) return;
+export default async function validateSession(sessionId: string) {
   const sessionRow = await findSession(sessionId);
 
   if (sessionRow === null || sessionRow.rowCount === 0) return null;
@@ -14,5 +12,7 @@ export default async function validateSession(clientId: string, sessionId: strin
 
   await refreshSession(sessionId);
 
-  return sessionEntry.userId;
+  console.log(sessionEntry);
+
+  return sessionEntry.user_id;
 }

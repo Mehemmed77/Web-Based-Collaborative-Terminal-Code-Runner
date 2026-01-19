@@ -1,4 +1,3 @@
-import { Message } from "@/shared/protocol.ts";
 import insertUserAndSession from "../repository/insertUserAndSession.ts";
 import {
   passwordValidationErrorMessages,
@@ -8,28 +7,29 @@ import {
 import { isRegisterPayload } from "../utils.ts";
 import { validatePassword, validateUsername } from "../validation.ts";
 import { hash } from "bcrypt-ts";
-import { ClientSocket } from "@/shared/state/socket.ts";
 
-export default async function register(msg: Message, ws: ClientSocket) {
-  if (msg.msgType !== "REGISTER" || !isRegisterPayload(msg.payload)) {
-    ws.send("Invalid Register Payload");
-    return;
+export default async function register(payload: any) {
+  const context: Record<string, string> = {};
+
+  if (!isRegisterPayload(payload)) {
+    context["message"] = "Invalid Register Payload"
+    return context;
   }
 
-  const username = msg.payload.username.trim().toLowerCase();
-  const password = msg.payload.password;
+  const username = payload.username.trim().toLowerCase();
+  const password = payload.password;
 
   const val1 = validateUsername(username);
   const val2 = validatePassword(password);
 
   if (val1 !== "VALID") {
-    ws.send(usernameValidationErrorMessages[val1]);
-    return;
+    context["message"] = usernameValidationErrorMessages[val1];
+    return context;
   }
 
   if (val2 !== "VALID") {
-    ws.send(passwordValidationErrorMessages[val2]);
-    return;
+    context["message"] = passwordValidationErrorMessages[val2];
+    return context;
   }
 
   const hashedPassword = await hash(password, 10);
@@ -39,9 +39,12 @@ export default async function register(msg: Message, ws: ClientSocket) {
   const queryRes = await insertUserAndSession(userId, username, hashedPassword, sessionId);
 
   if (queryRes !== "DONE") {
-    ws.send(insertionMessages[queryRes]);
-    return;
+    context["message"] = insertionMessages[queryRes];
+    return context;
   }
 
-  return sessionId;
+  context["message"] = "SUCCESS";
+  context["sessionId"] = sessionId;
+
+  return context;
 }

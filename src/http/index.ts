@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import authRoutes from "./routes/auth.ts";
+import roomRoutes from "./routes/rooms.ts";
 
 export function createHttpServer() {
   const app = express();
@@ -13,6 +14,7 @@ export function createHttpServer() {
   app.use(express.json());
 
   app.use("/auth", authRoutes);
+  app.use("/", roomRoutes);
 
   return app;
 }
