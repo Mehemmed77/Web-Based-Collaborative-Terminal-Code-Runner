@@ -14,6 +14,7 @@ export default function ProtectedRoute() {
         setChecking(false);
         return;
       }
+      
 
       const response = await fetch("http://localhost:3000/auth/me", {
         method: "GET",
