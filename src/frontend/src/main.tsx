@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import Login from "./auth/Login";
 import Register from "./auth/Register";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import Room from "./rooms/Room";
+import CreateRoom from "./rooms/CreateRoom";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -13,7 +13,7 @@ createRoot(document.getElementById("root")!).render(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<ProtectedRoute />}>
-          <Route path="/rooms" element={<Room />} />
+          <Route path="/rooms" element={<CreateRoom />} />
         </Route>
       </Routes>
     </BrowserRouter>
