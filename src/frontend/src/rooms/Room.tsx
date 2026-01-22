@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
+import useRoomSocket from "../hooks/useRoomSocket";
 
 export default function Room() {
   const { roomId } = useParams();
   const [roomExistence, setRoomExistence] = useState<boolean>(false);
+  let ws: WebSocket | null;
 
   useEffect(() => {
     const checkRoom = async () => {
@@ -15,25 +17,29 @@ export default function Room() {
       const response = await fetch(`http://localhost:3000/rooms/${roomId}`, {
         method: "GET",
         headers: {
-            "Content-Type": "application/json",
-            "x-session-id": sessionStorage.getItem("sessionId")!,
-        }
+          "Content-Type": "application/json",
+          "x-session-id": sessionStorage.getItem("sessionId")!,
+        },
       });
-
-      const json = response.json();
-
-      console.log(json);
 
       if (response.status !== 200) {
         setRoomExistence(false);
         return;
       }
 
+      ws = useRoomSocket(roomId, (data) => {}).current;
       setRoomExistence(true);
     };
 
     checkRoom();
   }, []);
 
-  return roomExistence ? <h1>Room Number: {roomId}</h1> : <h1>Page not found</h1>;
+  return roomExistence ? (
+    <>
+      <h1>Room Number: {roomId}</h1> 
+      <button>send message</button>
+    </>
+  ) : (
+    <h1>Page not found</h1>
+  );
 }
