@@ -13,8 +13,8 @@ export function createHttpServer() {
 
   app.use(express.json());
 
-  app.use("/auth", authRoutes);
-  app.use("/", roomRoutes);
+  app.use("/auth/", authRoutes);
+  app.use("/rooms/", roomRoutes);
 
   return app;
 }

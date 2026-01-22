@@ -14,16 +14,6 @@ export default async function messageManager(msg: Message, ws: ClientSocket) {
       break;
     }
 
-    case "LOGIN": {
-      login(msg, ws);
-      break;
-    }
-
-    case "REGISTER": {
-      register(msg, ws);
-      break;
-    }
-
     case "LEAVE_ROOM": {
       const userId = await authenticate(ws, msg.payload.sessionId);
 
@@ -42,22 +32,22 @@ export default async function messageManager(msg: Message, ws: ClientSocket) {
       break;
     }
 
-    case "CREATE_ROOM": {
-      const userId = await authenticate(ws, msg.payload.sessionId);
+    // case "CREATE_ROOM": {
+    //   const userId = await authenticate(ws, msg.payload.sessionId);
 
-      if (userId === null) return;
+    //   if (userId === null) return;
 
-      createRoom(msg, ws, userId);
-      break;
-    }
+    //   createRoom(msg, ws, userId);
+    //   break;
+    // }
 
-    case "CREATE_FILE": {
-      const userId = await authenticate(ws, msg.payload.sessionId);
+    // case "CREATE_FILE": {
+    //   const userId = await authenticate(ws, msg.payload.sessionId);
 
-      if (userId === null) return;
+    //   if (userId === null) return;
 
-      createFile(msg, ws);
-      break;
-    }
+    //   createFile(msg, ws);
+    //   break;
+    // }
   }
 }

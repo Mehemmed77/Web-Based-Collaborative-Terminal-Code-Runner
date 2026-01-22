@@ -12,7 +12,5 @@ export default async function validateSession(sessionId: string) {
 
   await refreshSession(sessionId);
 
-  console.log(sessionEntry);
-
   return sessionEntry.user_id;
 }

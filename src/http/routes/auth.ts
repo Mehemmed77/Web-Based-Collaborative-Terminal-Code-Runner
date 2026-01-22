@@ -12,15 +12,12 @@ router.get("/me", requireAuth, (req, res) => {
 })
 
 router.post("/register", async (req, res) => {
-  console.log(req.body);
   const context = await register(req.body);
-  // no logic yet
   res.status(201).json(context);
 });
 
 router.post("/login", async (req, res) => {
   const context = await login(req.body);
-
   res.status(200).json(context);
 });
 

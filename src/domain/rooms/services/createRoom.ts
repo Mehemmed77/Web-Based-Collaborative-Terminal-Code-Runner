@@ -18,7 +18,7 @@ export default async function createRoom(payload: any) {
 
     const clients = new Map<string, ClientSocket>();
 
-    await pool.query("INSERT INTO rooms (room_id, owner_user_id) VALUES($1, $2)", [roomId, payload.ownerUserId]);
+    await pool.query("INSERT INTO rooms (room_id, owner_user_id) VALUES($1, $2)", [roomId, payload.userId]);
 
     activeRooms.set(roomId, { roomId: roomId, clients: clients });
 

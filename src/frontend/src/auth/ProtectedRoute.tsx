@@ -1,7 +1,9 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
+import { useGlobalContext } from "../hooks/useGlobalContext";
 
 export default function ProtectedRoute() {
+  const { dispatch } = useGlobalContext();
   const [sessionValidity, setSessionValidity] = useState<boolean>(false);
   const [checking, setChecking] = useState<boolean>(true);
 
@@ -25,6 +27,9 @@ export default function ProtectedRoute() {
       });
 
       if (response.status === 200){
+        const data = await response.json();
+        
+        dispatch({ type: "SET_USER_ID", userId: data.userId });
         setSessionValidity(true);
         setChecking(false);
       }

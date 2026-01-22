@@ -8,7 +8,7 @@ export function isJoinRoomPayload(payload: any) {
 export function isCreateRoomPayload(payload: any) {
     return (
         payload &&
-        typeof payload.ownerUserId === "string"
+        typeof payload.userId === "string"
     )
 }
 
