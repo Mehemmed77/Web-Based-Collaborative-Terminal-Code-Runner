@@ -1,6 +1,6 @@
 import { createContext, useReducer, type ReactNode } from "react";
 import type { GlobalContextType } from "./ContextType";
-import Reducer from "../state/reducer";
+import Reducer from "./reducer";
 
 export const GlobalContext = createContext<GlobalContextType | null>(null);
 

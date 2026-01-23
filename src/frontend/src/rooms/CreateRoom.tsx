@@ -1,28 +1,23 @@
+import { BACKEND_SERVER_LINK } from "../utils/constants";
 import { useGlobalContext } from "../hooks/useGlobalContext";
+import apiFetch from "../utils/apiFetch";
 
 export default function CreateRoom() {
-    const { state } = useGlobalContext();
+  const { state } = useGlobalContext();
 
-    const handleClick = async () => {
-        const sessionId = sessionStorage.getItem("sessionId");
+  const handleClick = async () => {
+    const data = { userId: state.userId };
 
-        const data = {userId: state.userId};
+    const response = await apiFetch(`${BACKEND_SERVER_LINK}rooms/createRoom/`, "POST", data);
 
-        const response = await fetch("http://localhost:3000/rooms/createRoom/", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "x-session-id": sessionId!,
-            },
-            body: JSON.stringify(data)
-        });
+    const json = await response.json();
 
-        const json = await response.json();
+    console.log(json);
+  };
 
-        console.log(json);
-    }
-
-    return (
-        <button type="button" onClick={handleClick}>Create Room</button>
-    )
+  return (
+    <button type="button" onClick={handleClick}>
+      Create Room
+    </button>
+  );
 }

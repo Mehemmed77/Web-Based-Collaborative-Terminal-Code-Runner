@@ -14,7 +14,7 @@ createRoot(document.getElementById("root")!).render(
     <BrowserRouter>
       <Routes>
         <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+        <Route path="/register" element={<Register />} /> 
         <Route path="/" element={<ProtectedRoute />}>
           <Route path="/rooms/createRoom" element={<CreateRoom />} />
           <Route path="/rooms/:roomId" element={<Room />} />

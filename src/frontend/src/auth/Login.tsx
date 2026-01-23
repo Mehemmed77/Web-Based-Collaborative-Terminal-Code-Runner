@@ -1,5 +1,7 @@
 import { useRef } from "react";
 import { useNavigate } from "react-router";
+import apiFetch from "../utils/apiFetch";
+import { BACKEND_SERVER_LINK } from "../utils/constants";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -15,19 +17,13 @@ export default function Login() {
       password: password,
     };
 
-    const request = await fetch("http://localhost:3000/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const response = await apiFetch(`${BACKEND_SERVER_LINK}auth/login`, "POST", data, true);
 
-    const response = await request.json();
+    const responseData = await response.json();
 
-    if (response.sessionId == null) return;
+    if (responseData.sessionId == null) return;
 
-    sessionStorage.setItem("sessionId", response.sessionId);
+    sessionStorage.setItem("sessionId", responseData.sessionId);
 
     navigate("/rooms");
   };

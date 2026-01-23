@@ -11,7 +11,6 @@ router.get("/:roomId", requireAuth, (req, res) => {
   const roomExistence = findRoom(roomId);
 
   roomExistence.then(val => {
-    console.log(val);
     if (val === "NOT_FOUND") {
       res.status(404);
       res.send(val);

@@ -1,4 +1,4 @@
-import type { Actions, GlobalState } from "../state/types"
+import type { Actions, GlobalState } from "./types"
 
 export type GlobalContextType = {
     state: GlobalState,

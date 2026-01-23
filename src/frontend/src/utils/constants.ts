@@ -1,0 +1,2 @@
+export const BACKEND_SERVER_LINK = "http://localhost:3000/";
+

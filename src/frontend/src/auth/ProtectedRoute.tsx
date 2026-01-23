@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router";
 import { useGlobalContext } from "../hooks/useGlobalContext";
+import apiFetch from "../utils/apiFetch";
+import { BACKEND_SERVER_LINK } from "../utils/constants";
 
 export default function ProtectedRoute() {
   const { dispatch } = useGlobalContext();
@@ -16,35 +18,26 @@ export default function ProtectedRoute() {
         setChecking(false);
         return;
       }
-      
 
-      const response = await fetch("http://localhost:3000/auth/me", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          "x-session-id": sessionStorage.getItem("sessionId")!,
-        },
-      });
+      const response = await apiFetch(`${BACKEND_SERVER_LINK}auth/me`, "GET");
 
-      if (response.status === 200){
+      if (response.status === 200) {
         const data = await response.json();
-        
+
         dispatch({ type: "SET_USER_ID", userId: data.userId });
         setSessionValidity(true);
         setChecking(false);
-      }
-
-      else {
+      } else {
         setSessionValidity(false);
-        setSessionValidity(false)
+        setSessionValidity(false);
       }
     };
 
     checkSessionId();
   }, []);
 
-  if(checking) {
-    return <p>loading spinner</p>
+  if (checking) {
+    return <p>loading spinner</p>;
   }
 
   return sessionValidity ? <Outlet /> : <Navigate to={"/login"} replace />;
