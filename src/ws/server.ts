@@ -4,6 +4,8 @@ import { v4 as id } from "uuid";
 import { ClientSocket } from "../shared/state/socket.ts";
 import { Server } from "http";
 import { activeRooms } from "@/shared/state/activeRoom.ts";
+import roomManager from "./roomManager.ts";
+import onMessage from "./onMessage.ts";
 
 export function createWebSocketServer(server: Server) {
   const wss = new WebSocketServer({ server });
@@ -14,27 +16,20 @@ export function createWebSocketServer(server: Server) {
 
     const roomId = url.searchParams.get("roomId");
     const userId = url.searchParams.get("userId");
+    const isOwner = url.searchParams.get("isOwner");
+
+    console.log(url.searchParams);
+
+    console.log(userId, isOwner);
 
     if (roomId == null || userId == null) return;
 
-    const clients = activeRooms.get(roomId)?.clients ?? new Map<string, ClientSocket>();
+    roomManager(roomId, userId, ws);
 
-    clients.set(userId, ws);
-    activeRooms.set(roomId, {clients: clients, roomId: roomId});
-
-    console.log(activeRooms.get(roomId)?.clients.size);
-
-    ws.on("message", (data) => {
-      const msg = data.toString();
-
-      activeRooms.get(roomId)?.clients.forEach(client => {
-        if (client.id === ws.id) return;
-        client.send(JSON.stringify(msg));
-      })
-    });
+    ws.on("message", (data) => onMessage(data, roomId, ws));
 
     ws.on("close", () => {
-      console.log(userId, " Closed connection.")
+      console.log(userId, " Closed connection.");
       activeRooms.get(roomId)?.clients.delete(userId);
     });
 

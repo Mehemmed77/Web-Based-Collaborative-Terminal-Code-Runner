@@ -6,19 +6,24 @@ import findRoom from "@/domain/rooms/services/findRoom.ts";
 const router = Router();
 
 router.get("/:roomId", requireAuth, (req, res) => {
+  console.log(req.userId);
   const roomId = req.params.roomId as string;
 
-  const roomExistence = findRoom(roomId);
+  const roomOwner = findRoom(roomId);
 
-  roomExistence.then(val => {
-    if (val === "NOT_FOUND") {
+  roomOwner.then(ownerId => {
+    if (ownerId === null) {
       res.status(404);
-      res.send(val);
+      res.send();
     }
 
     else {
+      const data = req.userId !== ownerId ? {} : {
+        ownerId: ownerId
+      }
+
       res.status(200);
-      res.send(val);
+      res.send(JSON.stringify(data));
     }
   });
 

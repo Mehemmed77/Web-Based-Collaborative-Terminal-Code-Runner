@@ -1,13 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router";
-import useRoomSocket from "./useRoomSocket";
+import useRoomSocket, { type RoomProps } from "./useRoomSocket";
 import apiFetch from "../utils/apiFetch";
 import { BACKEND_SERVER_LINK } from "../utils/constants";
 
 export default function Room() {
   const { roomId } = useParams();
+  const [effectiveRoomProps, setEffectiveRoomProps] = useState<RoomProps>({
+    roomId: null,
+    ownerId: null
+  });
+
   const [roomExistence, setRoomExistence] = useState<boolean>(false);
-  const ws = useRoomSocket(roomId ?? "", (data) => {
+
+  const ws = useRoomSocket(effectiveRoomProps, (data) => {
     console.log(data);
   }).current;
 
@@ -25,7 +31,14 @@ export default function Room() {
         ws?.close();
         return;
       }
+      
+      const json = await response.json();
 
+      const roomProps: RoomProps = {roomId: roomId, ownerId: null};
+
+      if (json.ownerId) roomProps.ownerId = json.ownerId;
+
+      setEffectiveRoomProps(roomProps);
       setRoomExistence(true);
     };
 

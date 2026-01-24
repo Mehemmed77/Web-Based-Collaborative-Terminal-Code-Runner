@@ -1,19 +1,33 @@
 import { useEffect, useRef } from "react";
 import { useGlobalContext } from "../hooks/useGlobalContext.tsx";
+import { WEBSOCKET_SERVER_LINK } from "../utils/constants.ts";
 
-export default function useRoomSocket(roomId: string, onMessage: (data: any) => void) {
+export interface RoomProps {
+  roomId: string | null;
+  ownerId: string | null;
+}
+
+export default function useRoomSocket(
+  effectiveRoomProps: RoomProps,
+  onMessage: (data: any) => void,
+) {
   const socketRef = useRef<WebSocket | null>(null);
   const { state } = useGlobalContext();
 
   useEffect(() => {
-    const ws = new WebSocket(`ws://localhost:3000/ws?roomId=${roomId}&userId=${state.userId}`);
+    if (effectiveRoomProps.roomId === null) return;
+
+    const isOwner = effectiveRoomProps.ownerId !== null;
+
+    const ws = new WebSocket(
+      `${WEBSOCKET_SERVER_LINK}?roomId=${effectiveRoomProps.roomId}&userId=${state.userId}&isOwner=${isOwner}`,
+    );
 
     ws.onopen = () => {
       console.log("connected");
     };
 
     ws.onmessage = (event) => {
-      console.log(event.data);
       onMessage(event.data);
     };
 
@@ -26,7 +40,7 @@ export default function useRoomSocket(roomId: string, onMessage: (data: any) => 
     return () => {
       ws.close();
     };
-  }, [roomId]);
+  }, [effectiveRoomProps.roomId, effectiveRoomProps.ownerId]);
 
   return socketRef;
 }
