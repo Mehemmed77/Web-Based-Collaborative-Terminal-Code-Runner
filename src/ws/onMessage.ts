@@ -1,12 +1,21 @@
 import { activeRooms } from "@/shared/state/activeRoom.ts";
+import { latestVals } from "@/shared/state/latestVals.ts";
 import { ClientSocket } from "@/shared/state/socket.ts";
 import { RawData } from "ws";
 
 export default function onMessage(data: RawData, roomId: string, ws: ClientSocket) {
-  const msg = data.toString();
+  const payload = JSON.parse(data.toString());
+  
+  if (!payload.type) return;
 
-  activeRooms.get(roomId)?.clients.forEach((client) => {
-    if (client.id === ws.id) return;
-    client.send(JSON.stringify(msg));
-  });
+  if (payload.type === "BROADCAST") {
+    const room = activeRooms.get(roomId);
+
+    room?.clients?.forEach(client => {
+      if(client.id === ws.id) return;
+      client.send(JSON.stringify(payload.msgContent));
+    })
+
+    latestVals.set(roomId, payload.msgContent);
+  }
 }

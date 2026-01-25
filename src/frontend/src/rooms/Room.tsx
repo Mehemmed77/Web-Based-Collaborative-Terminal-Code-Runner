@@ -8,13 +8,15 @@ export default function Room() {
   const { roomId } = useParams();
   const [effectiveRoomProps, setEffectiveRoomProps] = useState<RoomProps>({
     roomId: null,
-    ownerId: null
+    ownerId: null,
   });
-
+  const [value, setValue] = useState<string>("");
   const [roomExistence, setRoomExistence] = useState<boolean>(false);
 
   const ws = useRoomSocket(effectiveRoomProps, (data) => {
-    console.log(data);
+    // console.log(typeof data);
+    setValue(data);
+    console.log("hello");
   }).current;
 
   useEffect(() => {
@@ -31,13 +33,15 @@ export default function Room() {
         ws?.close();
         return;
       }
-      
+
       const json = await response.json();
 
-      const roomProps: RoomProps = {roomId: roomId, ownerId: null};
+      const roomProps: RoomProps = { roomId: roomId, ownerId: null };
 
       if (json.ownerId) roomProps.ownerId = json.ownerId;
-
+      console.log(json);
+      
+      setValue(json.latestVal);
       setEffectiveRoomProps(roomProps);
       setRoomExistence(true);
     };
@@ -45,14 +49,21 @@ export default function Room() {
     checkRoom();
   }, []);
 
-  const handleClick = () => {
-    ws?.send("Salamchik");
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    ws?.send(
+      JSON.stringify({
+        type: "BROADCAST",
+        msgContent: e.target.value,
+      }),
+    );
   };
 
   return roomExistence ? (
     <>
       <h1>Room Number: {roomId}</h1>
-      <button onClick={handleClick}>send message</button>
+      <input type="text" placeholder="Type a command" onChange={handleChange} value={value} />
+      {/* <button onClick={handleClick}>send message</button> */}
     </>
   ) : (
     <h1>Page not found</h1>

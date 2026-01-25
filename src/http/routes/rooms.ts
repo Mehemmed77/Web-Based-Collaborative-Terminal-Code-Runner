@@ -2,11 +2,12 @@ import { Router } from "express";
 import { requireAuth } from "../middleware/requireAuth.ts";
 import createRoom from "@/domain/rooms/services/createRoom.ts";
 import findRoom from "@/domain/rooms/services/findRoom.ts";
+import { activeRooms } from "@/shared/state/activeRoom.ts";
+import { latestVals } from "@/shared/state/latestVals.ts";
 
 const router = Router();
 
 router.get("/:roomId", requireAuth, (req, res) => {
-  console.log(req.userId);
   const roomId = req.params.roomId as string;
 
   const roomOwner = findRoom(roomId);
@@ -18,8 +19,12 @@ router.get("/:roomId", requireAuth, (req, res) => {
     }
 
     else {
-      const data = req.userId !== ownerId ? {} : {
-        ownerId: ownerId
+      const latestVal = latestVals.get(roomId) ?? "";
+      const data = req.userId !== ownerId ? {
+        latestVal: latestVal
+      } : {
+        ownerId: ownerId,
+        latestVal: latestVal
       }
 
       res.status(200);

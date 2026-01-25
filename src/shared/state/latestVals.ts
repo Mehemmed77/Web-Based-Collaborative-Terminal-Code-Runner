@@ -1,0 +1,1 @@
+export const latestVals = new Map<string, string>();

@@ -28,7 +28,7 @@ export default function useRoomSocket(
     };
 
     ws.onmessage = (event) => {
-      onMessage(event.data);
+      onMessage(JSON.parse(event.data));
     };
 
     ws.onclose = () => {
