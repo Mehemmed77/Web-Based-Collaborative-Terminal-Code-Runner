@@ -15,6 +15,7 @@ router.get("/:roomId", requireAuth, (req, res) => {
   roomOwner.then(ownerId => {
     if (ownerId === null) {
       res.status(404);
+      
       res.send();
     }
 
