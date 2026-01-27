@@ -8,19 +8,19 @@ export interface RoomProps {
 }
 
 export default function useRoomSocket(
-  effectiveRoomProps: RoomProps,
+  roomExistence: boolean,
+  roomId: string,
   onMessage: (data: any) => void,
 ) {
   const socketRef = useRef<WebSocket | null>(null);
   const { state } = useGlobalContext();
 
   useEffect(() => {
-    if (effectiveRoomProps.roomId === null) return;
-
-    const isOwner = effectiveRoomProps.ownerId !== null;
+    if (!roomExistence) return;
+    const isOwner = state.ownership === "OWNER";
 
     const ws = new WebSocket(
-      `${WEBSOCKET_SERVER_LINK}?roomId=${effectiveRoomProps.roomId}&userId=${state.userId}&isOwner=${isOwner}`,
+      `${WEBSOCKET_SERVER_LINK}?roomId=${roomId}&userId=${state.userId}&isOwner=${isOwner}`,
     );
 
     ws.onopen = () => {
@@ -28,7 +28,12 @@ export default function useRoomSocket(
     };
 
     ws.onmessage = (event) => {
-      onMessage(JSON.parse(event.data));
+      const msg = JSON.parse(event.data);
+
+      if (msg.type === "INIT" || msg.type === "UPDATE") {
+        onMessage(msg.content);
+      }
+
     };
 
     ws.onclose = () => {
@@ -40,7 +45,8 @@ export default function useRoomSocket(
     return () => {
       ws.close();
     };
-  }, [effectiveRoomProps.roomId, effectiveRoomProps.ownerId]);
+
+  }, [roomExistence, roomId, state.userId, state.ownership]);
 
   return socketRef;
 }

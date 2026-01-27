@@ -5,7 +5,7 @@ import Reducer from "./reducer";
 export const GlobalContext = createContext<GlobalContextType | null>(null);
 
 const GlobalContextProvider = ({children}: { children: ReactNode }) => {
-    const [state, dispatch] = useReducer(Reducer, { userId: null });
+    const [state, dispatch] = useReducer(Reducer, { userId: null, ownership: null, connectionState: "IDLE" });
 
     return (
         <GlobalContext.Provider value={{state: state, dispatch: dispatch}}>

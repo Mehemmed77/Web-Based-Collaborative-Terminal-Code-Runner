@@ -12,7 +12,6 @@ export default function onMessage(data: RawData, roomId: string, ws: ClientSocke
     const room = activeRooms.get(roomId);
 
     room?.clients?.forEach(client => {
-      if(client.id === ws.id) return;
       client.send(JSON.stringify(payload.msgContent));
     })
 
