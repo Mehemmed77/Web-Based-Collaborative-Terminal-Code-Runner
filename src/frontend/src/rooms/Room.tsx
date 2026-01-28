@@ -24,6 +24,7 @@ export default function Room() {
       }
 
       const response = await apiFetch(`${BACKEND_SERVER_LINK}rooms/${roomId}`, "GET");
+      
 
       if (response.status !== 200) {
         dispatch({ type: "SET_CONNECTION_STATE", connectionState: "ERROR" });
