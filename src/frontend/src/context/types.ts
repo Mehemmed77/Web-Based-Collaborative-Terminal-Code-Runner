@@ -1,4 +1,4 @@
-import type { ConnectionState } from "../utils/types";
+import type { ConnectionState } from "@protocol/ws";
 
 export type OwnershipState = "OWNER" | "USER";
 

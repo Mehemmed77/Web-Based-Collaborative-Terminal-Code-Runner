@@ -1,41 +1,40 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useParams } from "react-router";
 import useRoomSocket from "./useRoomSocket";
 import apiFetch from "../utils/apiFetch";
 import { BACKEND_SERVER_LINK } from "../utils/constants";
 import { useGlobalContext } from "../hooks/useGlobalContext";
+import type { Message } from "@protocol/ws";
 
 export default function Room() {
   const { roomId } = useParams();
-  const { dispatch } = useGlobalContext();
-  const [terminalValue, setTerminalValue] = useState<string>("");
+  const { state, dispatch } = useGlobalContext();
+  const [draftValue, setDraftValue] = useState<string>("");
   const [roomExistence, setRoomExistence] = useState<boolean>(false);
 
-  const ws = useRoomSocket(roomExistence, roomId ?? "", (data) => setTerminalValue(data)).current;
+  const onMessage = useCallback((data: any) => {
+    setDraftValue(data);
+  }, []);
+
+  const ws = useRoomSocket(roomExistence, roomId ?? "", onMessage).current;
 
   useEffect(() => {
     const checkRoom = async () => {
-      dispatch({ type: "SET_CONNECTION_STATE", connectionState: "CONNECTING" });
-
       if (roomId === undefined) {
-        dispatch({ type: "SET_CONNECTION_STATE", connectionState: "ERROR" });
         setRoomExistence(false);
         return;
       }
 
       const response = await apiFetch(`${BACKEND_SERVER_LINK}rooms/${roomId}`, "GET");
-      
 
       if (response.status !== 200) {
-        dispatch({ type: "SET_CONNECTION_STATE", connectionState: "ERROR" });
         setRoomExistence(false);
         return;
       }
 
       const json = await response.json();
-      
+
       dispatch({ type: "SET_OWNERSHIP", ownership: json.isOwner ? "OWNER" : "USER" });
-      dispatch({ type: "SET_CONNECTION_STATE", connectionState: "CONNECTED" });
 
       setRoomExistence(true);
     };
@@ -44,12 +43,17 @@ export default function Room() {
   }, [roomId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    ws?.send(
-      JSON.stringify({
-        type: "BROADCAST",
-        msgContent: e.target.value,
-      }),
-    );
+    if (state.connectionState !== "CONNECTED") return;
+
+    const inputVal = e.target.value;
+    setDraftValue(inputVal);
+
+    const data: Message = {
+      type: "BROADCAST",
+      content: inputVal
+    }
+
+    ws?.send(JSON.stringify(data));
   };
 
   return roomExistence ? (
@@ -59,9 +63,8 @@ export default function Room() {
         type="text"
         placeholder="Type a command"
         onChange={handleChange}
-        value={terminalValue}
+        value={draftValue}
       />
-      {/* <button onClick={handleClick}>send message</button> */}
     </>
   ) : (
     <h1>Page not found</h1>

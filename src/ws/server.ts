@@ -6,6 +6,8 @@ import { Server } from "http";
 import { activeRooms } from "@/shared/state/activeRoom.ts";
 import roomManager from "./roomManager.ts";
 import onMessage from "./onMessage.ts";
+import { latestVals } from "@/shared/state/latestVals.ts";
+import { Message } from "@/shared/protocol/ws.ts";
 
 export function createWebSocketServer(server: Server) {
   const wss = new WebSocketServer({ server });
@@ -18,21 +20,25 @@ export function createWebSocketServer(server: Server) {
     const userId = url.searchParams.get("userId");
     const isOwner = url.searchParams.get("isOwner");
 
-    console.log(url.searchParams);
-
     console.log(userId, isOwner);
 
     if (roomId == null || userId == null) return;
 
     roomManager(roomId, userId, ws);
 
-    ws.on("message", (data) => onMessage(data, roomId, ws));
+    const latestVal = latestVals.get(roomId) ?? "";
+    const message: Message = {
+      type: "INIT",
+      content: latestVal
+    }
+
+    ws.send(JSON.stringify(message));
+
+    ws.on("message", (data) => onMessage(data, roomId));
 
     ws.on("close", () => {
       console.log(userId, " Closed connection.");
       activeRooms.get(roomId)?.clients.delete(userId);
     });
-
-    // console.log(ws);
   });
 }

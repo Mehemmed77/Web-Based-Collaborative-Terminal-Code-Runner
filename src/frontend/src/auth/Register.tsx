@@ -2,6 +2,7 @@ import { useRef } from "react";
 import { useNavigate } from "react-router";
 import apiFetch from "../utils/apiFetch";
 import { BACKEND_SERVER_LINK } from "../utils/constants";
+import type { AuthResponse, RegisterRequest } from "@protocol/http";
 
 export default function Register() {
   const navigate = useNavigate();
@@ -9,17 +10,17 @@ export default function Register() {
   const ref2 = useRef<HTMLInputElement>(null);
 
   const handleClick = async () => {
-    const username = ref1.current?.value;
-    const password = ref2.current?.value;
+    const username = ref1.current?.value ?? "";
+    const password = ref2.current?.value ?? "";
 
-    const data = {
+    const data: RegisterRequest = {
       username: username,
       password: password,
     };
 
     const response = await apiFetch(`${BACKEND_SERVER_LINK}auth/register`, "POST", data, true);
 
-    const responseData = await response.json();
+    const responseData = await response.json() as AuthResponse;
 
     if (responseData.sessionId == null) return;
 
