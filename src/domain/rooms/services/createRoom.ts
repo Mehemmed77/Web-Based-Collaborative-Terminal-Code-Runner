@@ -20,7 +20,7 @@ export default async function createRoom(payload: any) {
 
     await pool.query("INSERT INTO rooms (room_id, owner_user_id) VALUES($1, $2)", [roomId, payload.userId]);
 
-    activeRooms.set(roomId, { roomId: roomId, clients: clients });
+    activeRooms.set(roomId, { roomId: roomId, clients: clients, ownerUserId: payload.userId });
 
     console.log(roomId);
 
