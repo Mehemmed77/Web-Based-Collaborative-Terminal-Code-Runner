@@ -5,6 +5,7 @@ import apiFetch from "../utils/apiFetch";
 import { BACKEND_SERVER_LINK } from "../utils/constants";
 import { useGlobalContext } from "../hooks/useGlobalContext";
 import type { Message } from "@protocol/ws";
+import Terminal from "../terminalUI/Terminal";
 
 export default function Room() {
   const { roomId } = useParams();
@@ -65,6 +66,7 @@ export default function Room() {
         onChange={handleChange}
         value={draftValue}
       />
+      <Terminal />
     </>
   ) : (
     <h1>Page not found</h1>
