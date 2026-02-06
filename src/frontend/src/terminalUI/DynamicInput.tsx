@@ -1,45 +1,42 @@
-import { useState, useRef } from "react";
+import { useState } from "react";
 import { Box, TextField } from "@mui/material";
 import Cursor from "./Cursor";
+import { CHAR_WIDTH } from "../constants";
 
 export default function DynamicInput() {
   const [value, setValue] = useState("");
-  const spanRef = useRef<HTMLSpanElement | null>(null);
+  const [caret, setCaret] = useState(0);
 
-  console.log(spanRef.current?.getBoundingClientRect().width);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setValue(e.target.value);
+    setCaret(e.target.selectionStart ?? 0);
+  }
+
+  const handleMouseMovement = (e: React.MouseEvent | React.KeyboardEvent) => {
+    setCaret((e.target as HTMLInputElement).selectionStart ?? 0);
+  }
+
   return (
-    <Box sx={{ display: "inline-flex", alignItems: "center", width: "100%", ml: 1, position: "relative" }}>
-      {/* hidden mirror */}
-      <span
-        ref={spanRef}
-        style={{
-          position: "absolute",
-          visibility: "hidden",
-          whiteSpace: "pre",
-          fontFamily: "monospace",
-          fontSize: 16,
-        }}
-      >
-        {value || " "}
-      </span>
-
+    <Box className="terminal-line-container">
       <TextField
         variant="standard"
         value={value}
-        onChange={(e) => setValue(e.target.value)}
+        onChange={handleChange}
+        onClick={handleMouseMovement}
+        onKeyUp={handleMouseMovement}
         InputProps={{ disableUnderline: true }}
         sx={{
-            width: "100%",
+          width: "100%",
           "& .MuiInputBase-input": {
             fontFamily: "monospace",
-            color: "white",
             caretColor: "transparent",
+            color: "white",
           },
         }}
       />
 
-      <Box display="flex" height={"32px"} alignItems="center">
-        <Cursor widthOfText={spanRef.current?.getBoundingClientRect().width ?? 0} />
+      <Box className="re-flex-align-center" height="32px">
+        <Cursor left={caret * CHAR_WIDTH} />
       </Box>
     </Box>
   );

@@ -1,0 +1,1 @@
+export const CHAR_WIDTH = 9;

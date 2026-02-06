@@ -1,11 +1,9 @@
 interface CursorProps {
-    widthOfText: number,
+    left: number,
 }
 
-export default function Cursor({ widthOfText }: CursorProps) {
-    const width = widthOfText + 10;
-
+export default function Cursor({ left }: CursorProps) {
     return (    
-        <div id="cursor" style={{ left: `${width}px` }} ></div>
+        <div id="cursor" style={{ left: `${left}px` }} ></div>
     )
 }
