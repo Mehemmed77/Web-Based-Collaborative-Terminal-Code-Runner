@@ -1,3 +1,11 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background-color: #0B0F1A !important;
+}
+
 #cursor {
   position: absolute;
   display: inline-block;
@@ -13,6 +21,32 @@
   50% {
     background-color: transparent;
   }
+}
+
+.paper-container {
+  background-color: #0F1320 !important;
+  max-width: 600px;
+  margin-inline: auto;
+  padding: 32px;
+}
+
+.circle {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #191d29;
+}
+
+.re-flex-align-justify-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.re-flex-column-align-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .re-flex-align-center {
@@ -56,4 +90,14 @@
   width: 100%;
   margin-left: 4px;
   position: relative;
+}
+
+body {
+  background-color: #0c1530;
+  color: white;
+  font-family: monospace;
+}
+
+.main-text {
+  text-align: center;
 }

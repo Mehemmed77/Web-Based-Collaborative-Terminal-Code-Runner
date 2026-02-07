@@ -8,9 +8,14 @@ import ProtectedRoute from "./auth/ProtectedRoute";
 import CreateRoom from "./rooms/CreateRoom";
 import GlobalContextProvider from "./context/ContextProvider";
 import Room from "./rooms/Room";
+import JoinRoom from "./rooms/JoinRoom";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import theme from "./theme";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
       <GlobalContextProvider>
         <BrowserRouter>
           <Routes>
@@ -19,9 +24,11 @@ createRoot(document.getElementById("root")!).render(
             <Route path="/" element={<ProtectedRoute />}>
               <Route path="/rooms/createRoom" element={<CreateRoom />} />
               <Route path="/rooms/:roomId" element={<Room />} />
+              <Route path="/rooms/joinRoom" element={<JoinRoom />} />
             </Route>
           </Routes>
         </BrowserRouter>
       </GlobalContextProvider>
+    </ThemeProvider>
   </StrictMode>,
 );
