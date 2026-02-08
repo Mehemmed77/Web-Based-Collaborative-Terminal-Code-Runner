@@ -1,0 +1,26 @@
+.re-flex-direction-column {
+  display: flex;
+  flex-direction: column;
+}
+
+.re-flex-align-justify-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.re-flex-column-align-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.re-flex-align-center {
+  display: flex;
+  align-items: center;
+}
+
+.re-flex-align-start {
+  display: flex;
+  align-items: start;
+}
