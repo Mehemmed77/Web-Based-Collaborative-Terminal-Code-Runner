@@ -1,5 +1,5 @@
 .main {
-  max-width: 500px;
+  max-width: 600px;
   margin-inline: auto;
   gap: 24px;
 }
@@ -8,7 +8,7 @@
   background-color: #0F1320;
   color: white;
   border-radius: 16px;
-  padding: 32px;
+  padding: 25px;
 }
 
 .circle {

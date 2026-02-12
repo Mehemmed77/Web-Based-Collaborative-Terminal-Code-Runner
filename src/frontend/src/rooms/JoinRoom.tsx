@@ -7,7 +7,6 @@ import {
   AccordionSummary,
   AccordionDetails,
 } from "@mui/material";
-import TerminalIcon from "@mui/icons-material/Terminal";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ReDivider from "../components/ReDivider";
@@ -15,6 +14,8 @@ import KeyboardDoubleArrowDownIcon from "@mui/icons-material/KeyboardDoubleArrow
 import FadeIn from "../animations/FadeIn";
 import ScaleUp from "../animations/ScaleUp";
 import TypingText from "../animations/TypingText";
+import TerminalLogo from "../components/TerminalLogo";
+import "../css/joinRoom.css";
 
 export default function JoinRoom() {
   return (
@@ -24,9 +25,7 @@ export default function JoinRoom() {
           <Box className="container re-flex-direction-column" mt={4} gap={5}>
             <div className="re-flex-column-align-center">
               <div className="re-flex-align-justify-center">
-                <div className="re-flex-align-justify-center circle">
-                  <TerminalIcon sx={{ color: "#1976d2" }} />
-                </div>
+                <TerminalLogo />
               </div>
 
               <Typography variant="h5">Join a session</Typography>
@@ -59,7 +58,7 @@ export default function JoinRoom() {
                 </Button>
               </Box>
 
-              <Typography variant="body1" align="center">
+              <Typography variant="body1" align="center" sx={{ mb: 1.5 }}>
                 Or
               </Typography>
 

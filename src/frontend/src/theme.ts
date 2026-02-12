@@ -43,7 +43,7 @@ const theme = createTheme({
     body2: {
       fontSize: "0.85rem",
       color: "#B0B8C8",
-      fontWeight: 500,
+      fontWeight: 300,
       textTransform: "none",
     },
     caption: {

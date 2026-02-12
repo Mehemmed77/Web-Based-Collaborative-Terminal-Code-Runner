@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
-interface TypingText {
+interface TypingTextProps {
   text: string;
 }
 
-export default function TypingText({ text }: TypingText) {
+export default function TypingText({ text }: TypingTextProps) {
   const [displayed, setDisplayed] = useState<string>("");
 
   useEffect(() => {

@@ -1,0 +1,10 @@
+.main {
+    max-width: 600px;
+    margin-inline: auto;
+}
+
+.auth-input-container{
+    background-color: #0B0F1A;
+    padding: 16px;
+    border-radius: 16px;
+}

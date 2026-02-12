@@ -20,6 +20,12 @@
   align-items: center;
 }
 
+.re-flex-align-center-justify-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 .re-flex-align-start {
   display: flex;
   align-items: start;
