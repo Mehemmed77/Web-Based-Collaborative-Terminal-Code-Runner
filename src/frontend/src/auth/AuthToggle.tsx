@@ -1,15 +1,13 @@
 import * as React from "react";
 import { ToggleButton, ToggleButtonGroup, Box, useTheme } from "@mui/material";
+import { useAuthStore } from "./store";
 
 export default function AuthToggle() {
   const theme = useTheme();
-  const [value, setValue] = React.useState("login");
+  const type = useAuthStore((state) => state.type);
+  const setType = useAuthStore((state) => state.setType);
 
-  const handleChange = (event: React.MouseEvent, newValue: any) => {
-    if (newValue !== null) {
-      setValue(newValue);
-    }
-  };
+  const handleChange = (_: React.MouseEvent, newValue: any) => setType(newValue);
 
   return (
     <Box
@@ -20,7 +18,7 @@ export default function AuthToggle() {
       }}
     >
       <ToggleButtonGroup
-        value={value}
+        value={type}
         exclusive
         onChange={handleChange}
         sx={{
@@ -42,8 +40,8 @@ export default function AuthToggle() {
           },
         }}
       >
-        <ToggleButton value="login">login()</ToggleButton>
-        <ToggleButton value="register">register()</ToggleButton>
+        <ToggleButton value="LOGIN">login()</ToggleButton>
+        <ToggleButton value="REGISTER">register()</ToggleButton>
       </ToggleButtonGroup>
     </Box>
   );

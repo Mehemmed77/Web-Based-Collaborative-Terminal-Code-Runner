@@ -1,18 +1,23 @@
-import { useRef } from "react";
 import { useNavigate } from "react-router";
 import apiFetch from "../utils/apiFetch";
 import { BACKEND_SERVER_LINK } from "../utils/constants";
 import type { AuthResponse, RegisterRequest } from "@protocol/http";
+import Box from "@mui/material/Box";
+import CommonAuth from "./CommonAuth";
+import FormLabel from "@mui/material/FormLabel";
+import TextField from "@mui/material/TextField";
+import { useAuthStore } from "./store";
+import { authInputStyle } from "./authInputStyle";
 
 export default function Register() {
   const navigate = useNavigate();
-  const ref1 = useRef<HTMLInputElement>(null);
-  const ref2 = useRef<HTMLInputElement>(null);
+
+  const username = useAuthStore((s) => s.username);
+  const password = useAuthStore((s) => s.password);
+  const fullName = useAuthStore((s) => s.fullName);
+  const setFullName = useAuthStore((s) => s.setFullName);
 
   const handleClick = async () => {
-    const username = ref1.current?.value ?? "";
-    const password = ref2.current?.value ?? "";
-
     const data: RegisterRequest = {
       username: username,
       password: password,
@@ -20,7 +25,7 @@ export default function Register() {
 
     const response = await apiFetch(`${BACKEND_SERVER_LINK}auth/register`, "POST", data, true);
 
-    const responseData = await response.json() as AuthResponse;
+    const responseData = (await response.json()) as AuthResponse;
 
     if (responseData.sessionId == null) return;
 
@@ -30,14 +35,26 @@ export default function Register() {
   };
 
   return (
-    <div>
-      <h1>Register</h1>
-      <br />
-      <input ref={ref1} type="text" placeholder="Enter username" />
-      <input ref={ref2} type="password" placeholder="Enter password" />
-      <button type="button" onClick={handleClick}>
-        Submit
-      </button>
-    </div>
+    <Box className="input-container" mt={1}>
+      <Box className="re-flex-align-center">
+        <FormLabel> full name </FormLabel>
+        <TextField
+          onChange={(e) => setFullName(e.target.value)}
+          value={fullName}
+          type="text"
+          variant="filled"
+          size="small"
+          hiddenLabel
+          placeholder="Enter value"
+          InputProps={{
+            disableUnderline: true,
+          }}
+          sx={authInputStyle}
+        />
+      </Box>
+
+      <CommonAuth />
+
+    </Box>
   );
 }

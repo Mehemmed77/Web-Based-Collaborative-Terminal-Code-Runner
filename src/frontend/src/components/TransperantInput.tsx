@@ -1,6 +1,7 @@
 import Box from "@mui/material/Box";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
+// import { authInputStyle } from "/auth/authInputStyle";
 
 interface TransperantInputProps {
   label: string
@@ -20,23 +21,7 @@ export default function TransperantInput( {label, isPassword}: TransperantInputP
         InputProps={{
           disableUnderline: true,
         }}
-        sx={{
-          width: 200,
-          "& .MuiFilledInput-root": {
-            backgroundColor: "transparent",
-            borderRadius: 1,
-            fontSize: "0.875rem",
-            "&:hover": {
-              backgroundColor: "transparent",
-            },
-            "&.Mui-focused": {
-              backgroundColor: "transparent",
-            },
-          },
-          "& .MuiFilledInput-input": {
-            padding: "8px 12px",
-          },
-        }}
+        // sx={authInputStyle}
       />
     </Box>
   );

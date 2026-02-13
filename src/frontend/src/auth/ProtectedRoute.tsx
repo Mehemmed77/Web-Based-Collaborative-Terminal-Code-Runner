@@ -40,5 +40,5 @@ export default function ProtectedRoute() {
     return <p>loading spinner</p>;
   }
 
-  return sessionValidity ? <Outlet /> : <Navigate to={"/login"} replace />;
+  return sessionValidity ? <Outlet /> : <Navigate to={"/auth"} replace />;
 }
