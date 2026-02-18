@@ -5,7 +5,7 @@ import {
   usernameValidationErrorMessages,
 } from "../types.ts";
 import { isRegisterPayload } from "../utils.ts";
-import { validatePassword, validateUsername } from "../validation.ts";
+import { validateFullName, validatePassword, validateUsername } from "../validation.ts";
 import { hash } from "bcrypt-ts";
 
 export default async function register(payload: any) {
@@ -16,11 +16,13 @@ export default async function register(payload: any) {
     return context;
   }
 
+  const fullName = payload.fullName;
   const username = payload.username.trim().toLowerCase();
   const password = payload.password;
 
   const val1 = validateUsername(username);
   const val2 = validatePassword(password);
+  const val3 = validateFullName(fullName);
 
   if (val1 !== "VALID") {
     context["message"] = usernameValidationErrorMessages[val1];
@@ -32,11 +34,16 @@ export default async function register(payload: any) {
     return context;
   }
 
+  if (val3 !== "VALID") {
+    context["message"] = passwordValidationErrorMessages[val3];
+    return context;
+  }
+
   const hashedPassword = await hash(password, 10);
   const userId = crypto.randomUUID();
   const sessionId = crypto.randomUUID();
 
-  const queryRes = await insertUserAndSession(userId, username, hashedPassword, sessionId);
+  const queryRes = await insertUserAndSession(userId, username, hashedPassword, fullName, sessionId);
 
   if (queryRes !== "DONE") {
     context["message"] = insertionMessages[queryRes];

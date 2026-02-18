@@ -4,6 +4,7 @@ export default async function insertUserAndSession(
   userId: string,
   username: string,
   password: string,
+  fullName: string,
   sessionId: string
 ) {
   const client = await pool.connect();
@@ -11,10 +12,11 @@ export default async function insertUserAndSession(
 
   try {
     await client.query("BEGIN");
-    await client.query("INSERT INTO users (id, username, password_hash) VALUES ($1, $2, $3)", [
+    await client.query("INSERT INTO users (id, username, password_hash, full_name) VALUES ($1, $2, $3, $4)", [
       userId,
       username,
       password,
+      fullName
     ]);
 
     await client.query("INSERT INTO sessions (id, user_id, expires_at) VALUES ($1, $2, $3)", [

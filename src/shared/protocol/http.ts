@@ -4,10 +4,12 @@ export type LoginRequest = {
 }
 
 export type RegisterRequest = {
+    fullName: string,
     username: string,
     password: string,
 }
 
 export type AuthResponse = {
     sessionId: string,
+    message?: string,
 }

@@ -8,13 +8,13 @@ export default function CommonAuth() {
   const setUsername = useAuthStore((s) => s.setUsername);
   const password = useAuthStore((s) => s.password);
   const setPassword = useAuthStore((s) => s.setPassword);
-  
+
   return (
     <Box className="input-container">
       <Box className="re-flex-align-center">
         <FormLabel> username </FormLabel>
         <TextField
-          onChange={e => setUsername(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           value={username}
           type={"text"}
           variant="filled"
@@ -31,7 +31,7 @@ export default function CommonAuth() {
       <Box className="re-flex-align-center">
         <FormLabel> password </FormLabel>
         <TextField
-          onChange={e => setPassword(e.target.value)}
+          onChange={(e) => setPassword(e.target.value)}
           value={password}
           type="password"
           variant="filled"

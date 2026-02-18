@@ -6,6 +6,7 @@ import type { AuthResponse, LoginRequest } from "@protocol/http";
 import { Box } from "@mui/material";
 import { useAuthStore } from "./store";
 import CommonAuth from "./CommonAuth";
+import { useCallback } from "react";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function Login() {
   const username = useAuthStore((s) => s.username);
   const password = useAuthStore((s) => s.password);
 
-  const handleClick = async () => {
+  const handleClick = useCallback(async () => {
     const data: LoginRequest = {
       username: username,
       password: password,
@@ -23,16 +24,25 @@ export default function Login() {
 
     const responseData = (await response.json()) as AuthResponse;
 
+    console.log(responseData);
+
     if (responseData.sessionId == null) return;
 
     sessionStorage.setItem("sessionId", responseData.sessionId);
 
     navigate("/rooms");
-  };
+  }, [username, password]);
 
   return (
     <Box className="input-container" mt={1}>
-      <CommonAuth />
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          handleClick();
+        }}>
+        <CommonAuth />
+        <button type="submit" className="floating-button"></button>
+      </form>
     </Box>
   );
 }
