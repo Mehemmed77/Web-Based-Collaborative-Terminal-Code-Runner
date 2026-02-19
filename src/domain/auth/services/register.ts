@@ -51,6 +51,7 @@ export default async function register(payload: any) {
   }
 
   context["message"] = "SUCCESS";
+  context["userId"] = userId;
   context["sessionId"] = sessionId;
 
   return context;

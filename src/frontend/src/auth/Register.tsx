@@ -7,7 +7,7 @@ import Box from "@mui/material/Box";
 import CommonAuth from "./CommonAuth";
 import FormLabel from "@mui/material/FormLabel";
 import TextField from "@mui/material/TextField";
-import { useAuthStore } from "./store";
+import { useAuthStore } from "../store/authStore";
 import { authInputStyle } from "./authInputStyle";
 import { useCallback } from "react";
 
@@ -19,6 +19,7 @@ export default function Register() {
   const fullName = useAuthStore((s) => s.fullName);
   const setFullName = useAuthStore((s) => s.setFullName);
   const setError = useAuthStore((s) => s.setError);
+  const setUserId = useAuthStore((s) => s.setUserId);
 
   const handleClick = useCallback(async () => {
     const data: RegisterRequest = {
@@ -34,9 +35,10 @@ export default function Register() {
     if (responseData.sessionId == null) {
       setError(responseData.message ?? "Some error ocurred, try again.");
       return;
-    };
+    }
 
     sessionStorage.setItem("sessionId", responseData.sessionId);
+    setUserId(responseData.userId);
 
     navigate("/rooms");
   }, [username, password, fullName]);

@@ -10,12 +10,14 @@ export default function DynamicInput() {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setValue(e.target.value);
     setCaret(e.target.selectionStart ?? 0);
+
+    
+
   }
 
   const handleMouseMovement = (e: React.MouseEvent | React.KeyboardEvent) => {
     setCaret((e.target as HTMLInputElement).selectionStart ?? 0);
   }
-  
 
   return (
     <Box className="terminal-line-container">

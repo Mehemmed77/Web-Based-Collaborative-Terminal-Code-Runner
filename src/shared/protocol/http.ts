@@ -12,4 +12,5 @@ export type RegisterRequest = {
 export type AuthResponse = {
     sessionId: string,
     message?: string,
+    userId: string,
 }

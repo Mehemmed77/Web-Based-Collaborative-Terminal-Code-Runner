@@ -7,7 +7,7 @@ import "../css/auth.css";
 import { AnimatePresence } from "motion/react";
 import * as motion from "motion/react-client";
 import type { Variants } from "framer-motion";
-import { useAuthStore } from "./store";
+import { useAuthStore } from "../store/authStore";
 import Login from "./Login";
 import Register from "./Register";
 
@@ -33,10 +33,7 @@ export default function AuthEntry() {
       <FadeIn>
         <ScaleUp>
           <main className="main">
-            <motion.div
-              animate={error ? "shake" : "idle"}
-              variants={shakeVariants}
-            >
+            <motion.div animate={error ? "shake" : "idle"} variants={shakeVariants}>
               <Box className="container re-flex-direction-column" gap={3}>
                 <Box className="re-flex-align-center" gap={3}>
                   <TerminalLogo />
@@ -64,9 +61,11 @@ export default function AuthEntry() {
                     </Typography>
                   </Box>
 
-                  {error && <Typography variant="body2" sx={{ color: "#EF5350" }}>
-                    {error}
-                  </Typography>}
+                  {error && (
+                    <Typography variant="body2" sx={{ color: "#EF5350" }}>
+                      {error}
+                    </Typography>
+                  )}
 
                   <Typography variant="body2">
                     # we keep authentication minimal - no dashboards, just simple terminal

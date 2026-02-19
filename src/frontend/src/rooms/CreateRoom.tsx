@@ -1,12 +1,12 @@
 import { BACKEND_SERVER_LINK } from "../utils/constants";
-import { useGlobalContext } from "../hooks/useGlobalContext";
 import apiFetch from "../utils/apiFetch";
+import { useAuthStore } from "../store/authStore";
 
 export default function CreateRoom() {
-  const { state } = useGlobalContext();
+  const userId = useAuthStore((s) => s.userId);
 
   const handleClick = async () => {
-    const data = { userId: state.userId };
+    const data = { userId: userId };
 
     const response = await apiFetch(`${BACKEND_SERVER_LINK}rooms/createRoom/`, "POST", data);
 

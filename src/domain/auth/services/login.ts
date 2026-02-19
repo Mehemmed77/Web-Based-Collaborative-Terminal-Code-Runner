@@ -43,6 +43,7 @@ export default async function login(payload: any) {
   }
 
   context["message"] = "SUCCESS";
+  context["userId"] = userId;
   context["sessionId"] = sessionId;
 
   return context;

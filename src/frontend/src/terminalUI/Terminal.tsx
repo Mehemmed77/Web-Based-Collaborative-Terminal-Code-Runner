@@ -6,12 +6,12 @@ export default function Terminal() {
     <Box sx={{ display: "grid", placeItems: "center", mx: "auto" }}>
       <Paper className="terminal-container">
         <Box className="terminal-header">
-          <Typography>howtogeek@ubuntu: ~</Typography>
+          <Typography sx={{ color: "white" }}>Room QekmgEfnqD</Typography>
         </Box>
         <Box sx={{ p: 2, fontSize: 15 }}>
           <Box className="re-flex-align-start">
             <Box height="32px" className="re-flex-align-center">
-              <span>csci2400:~$</span>
+              <span>QekmgEfnqD:~$</span>
             </Box>
             <DynamicInput />
           </Box>

@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import "./main.css";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import CreateRoom from "./rooms/CreateRoom";
-import GlobalContextProvider from "./context/ContextProvider";
 import Room from "./rooms/Room";
 import JoinRoom from "./rooms/JoinRoom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
@@ -15,7 +14,6 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <GlobalContextProvider>
         <BrowserRouter>
           <Routes>
             <Route path="/auth" element={<AuthEntry />} />
@@ -26,7 +24,6 @@ createRoot(document.getElementById("root")!).render(
             </Route>
           </Routes>
         </BrowserRouter>
-      </GlobalContextProvider>
     </ThemeProvider>
   </StrictMode>,
 );

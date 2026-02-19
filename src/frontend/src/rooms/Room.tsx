@@ -3,15 +3,16 @@ import { useParams } from "react-router";
 import useRoomSocket from "./useRoomSocket";
 import apiFetch from "../utils/apiFetch";
 import { BACKEND_SERVER_LINK } from "../utils/constants";
-import { useGlobalContext } from "../hooks/useGlobalContext";
 import type { Message } from "@protocol/ws";
 import Terminal from "../terminalUI/Terminal";
+import { useRoomStore } from "../store/roomStore";
 
 export default function Room() {
   const { roomId } = useParams();
-  const { state, dispatch } = useGlobalContext();
   const [draftValue, setDraftValue] = useState<string>("");
   const [roomExistence, setRoomExistence] = useState<boolean>(false);
+  const connectionState = useRoomStore(s => s.connectionState);
+  const setOwnership = useRoomStore(s => s.setOwnership);
 
   const onMessage = useCallback((data: any) => {
     setDraftValue(data);
@@ -35,8 +36,7 @@ export default function Room() {
 
       const json = await response.json();
 
-      dispatch({ type: "SET_OWNERSHIP", ownership: json.isOwner ? "OWNER" : "USER" });
-
+      setOwnership(json.isOwner ? "OWNER" : "USER")
       setRoomExistence(true);
     };
 
@@ -44,7 +44,7 @@ export default function Room() {
   }, [roomId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (state.connectionState !== "CONNECTED") return;
+    if (connectionState !== "CONNECTED") return;
 
     const inputVal = e.target.value;
     setDraftValue(inputVal);

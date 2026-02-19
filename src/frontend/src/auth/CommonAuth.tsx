@@ -1,7 +1,7 @@
 import "../css/auth.css";
 import { Box, FormLabel, TextField } from "@mui/material";
 import { authInputStyle } from "./authInputStyle";
-import { useAuthStore } from "./store";
+import { useAuthStore } from "../store/authStore";
 
 export default function CommonAuth() {
   const username = useAuthStore((s) => s.username);

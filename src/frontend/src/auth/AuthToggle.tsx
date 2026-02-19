@@ -1,6 +1,6 @@
 import * as React from "react";
 import { ToggleButton, ToggleButtonGroup, Box, useTheme } from "@mui/material";
-import { useAuthStore } from "./store";
+import { useAuthStore } from "../store/authStore";
 
 export default function AuthToggle() {
   const theme = useTheme();

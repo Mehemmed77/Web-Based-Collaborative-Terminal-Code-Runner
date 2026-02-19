@@ -1,7 +1,8 @@
 import { useEffect, useRef } from "react";
-import { useGlobalContext } from "../hooks/useGlobalContext.tsx";
 import { WEBSOCKET_SERVER_LINK } from "../utils/constants.ts";
 import type { Message } from "@protocol/ws.ts";
+import { useRoomStore } from "..//store/roomStore.ts";
+import { useAuthStore } from "../store/authStore.ts";
 
 export interface RoomProps {
   roomId: string | null;
@@ -13,27 +14,30 @@ export default function useRoomSocket(
   roomId: string,
   onMessage: (data: any) => void,
 ) {
-  const { dispatch } = useGlobalContext();
   const socketRef = useRef<WebSocket | null>(null);
-  const { state } = useGlobalContext();
+  const ownership = useRoomStore(s => s.ownership);
+  const setConnectionState = useRoomStore(s => s.setConnectionState);
+  const setRoomId = useRoomStore(s => s.setRoomId);
+  const userId = useAuthStore(s => s.userId);
 
   useEffect(() => {
     if (!roomExistence) return;
-    const isOwner = state.ownership === "OWNER";
+    const isOwner = ownership === "OWNER";
   
-    dispatch({ type: "SET_CONNECTION_STATE", connectionState: "CONNECTING" });
+    setConnectionState("CONNECTING");
 
     const ws = new WebSocket(
-      `${WEBSOCKET_SERVER_LINK}?roomId=${roomId}&userId=${state.userId}&isOwner=${isOwner}`,
+      `${WEBSOCKET_SERVER_LINK}?roomId=${roomId}&userId=${userId}&isOwner=${isOwner}`,
     );
 
     ws.onopen = () => {
-      dispatch({ type: "SET_CONNECTION_STATE", connectionState: "CONNECTED" });
+      setConnectionState("CONNECTED");
+      setRoomId(roomId);
       console.log("connected");
     };
 
     ws.onerror = () => {
-      dispatch({ type: "SET_CONNECTION_STATE", connectionState: "ERROR" });
+      setConnectionState("ERROR");
     };
 
     ws.onmessage = (event) => {
@@ -45,7 +49,7 @@ export default function useRoomSocket(
     };
 
     ws.onclose = () => {
-      dispatch({ type: "SET_CONNECTION_STATE", connectionState: "IDLE" });
+      setConnectionState("IDLE");
       console.log("closed");
     };
 
@@ -55,7 +59,7 @@ export default function useRoomSocket(
       ws.close();
     };
 
-  }, [roomExistence, roomId, state.userId, state.ownership]);
+  }, [roomExistence, roomId, userId, ownership]);
 
   return socketRef;
 }
