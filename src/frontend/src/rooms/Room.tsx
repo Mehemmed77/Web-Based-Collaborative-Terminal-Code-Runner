@@ -1,71 +1,44 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams } from "react-router";
-import useRoomSocket from "./useRoomSocket";
-import apiFetch from "../utils/apiFetch";
-import { BACKEND_SERVER_LINK } from "../utils/constants";
 import type { Message } from "@protocol/ws";
 import Terminal from "../terminalUI/Terminal";
 import { useRoomStore } from "../store/roomStore";
+import { useAuthStore } from "../store/authStore";
 
 export default function Room() {
   const { roomId } = useParams();
-  const [draftValue, setDraftValue] = useState<string>("");
-  const [roomExistence, setRoomExistence] = useState<boolean>(false);
-  const connectionState = useRoomStore(s => s.connectionState);
-  const setOwnership = useRoomStore(s => s.setOwnership);
+  
+  // AuthStore
+  const userId = useAuthStore((s) => s.userId);
 
-  const onMessage = useCallback((data: any) => {
-    setDraftValue(data);
-  }, []);
-
-  const ws = useRoomSocket(roomExistence, roomId ?? "", onMessage).current;
+  // RoomStore
+  const draftValue = useRoomStore((s) => s.draftValue);
+  const connectionState = useRoomStore((s) => s.connectionState);
+  const connect = useRoomStore((s) => s.connect);
+  const send = useRoomStore((s) => s.send);
+  const disconnect = useRoomStore((s) => s.disconnect);
 
   useEffect(() => {
-    const checkRoom = async () => {
-      if (roomId === undefined) {
-        setRoomExistence(false);
-        return;
-      }
+    connect(roomId, userId ?? "");
 
-      const response = await apiFetch(`${BACKEND_SERVER_LINK}rooms/${roomId}`, "GET");
-
-      if (response.status !== 200) {
-        setRoomExistence(false);
-        return;
-      }
-
-      const json = await response.json();
-
-      setOwnership(json.isOwner ? "OWNER" : "USER")
-      setRoomExistence(true);
-    };
-
-    checkRoom();
-  }, [roomId]);
+    return () => disconnect();
+  }, [roomId, userId]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (connectionState !== "CONNECTED") return;
-
-    const inputVal = e.target.value;
-    setDraftValue(inputVal);
+    const value = e.target.value;
 
     const data: Message = {
       type: "BROADCAST",
-      content: inputVal
-    }
+      content: value,
+    };
 
-    ws?.send(JSON.stringify(data));
+    send(data);
   };
 
-  return roomExistence ? (
+  return connectionState === "CONNECTED" ? (
     <>
       <h1>Room Number: {roomId}</h1>
-      <input
-        type="text"
-        placeholder="Type a command"
-        onChange={handleChange}
-        value={draftValue}
-      />
+      <input type="text" placeholder="Type a command" onChange={handleChange} value={draftValue} />
       <Terminal />
     </>
   ) : (

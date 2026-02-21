@@ -22,7 +22,6 @@ export default function ProtectedRoute() {
       if (response.status === 200) {
         const data = await response.json();
 
-        
         setSessionValidity(true);
         setChecking(false);
       } else {
