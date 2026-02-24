@@ -1,12 +1,3 @@
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from "@mui/material";
 import KeyboardDoubleArrowRightRoundedIcon from "@mui/icons-material/KeyboardDoubleArrowRightRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import ReDivider from "../components/ReDivider";
@@ -16,8 +7,21 @@ import ScaleUp from "../animations/ScaleUp";
 import TypingText from "../animations/TypingText";
 import TerminalLogo from "../components/TerminalLogo";
 import "../css/joinRoom.css";
+import Box from "@mui/material/Box";
+import Typography from "@mui/material/Typography";
+import TextField from "@mui/material/TextField";
+import Button from "@mui/material/Button";
+import Accordion from "@mui/material/Accordion";
+import AccordionSummary from "@mui/material/AccordionSummary";
+import AccordionDetails from "@mui/material/AccordionDetails";
+import InputAdornment from "@mui/material/InputAdornment";
+import SearchIcon from "@mui/icons-material/Search";
+import CircularProgress from "@mui/material/CircularProgress";
+import { useState } from "react";
 
 export default function JoinRoom() {
+  const [clicked, setClicked] = useState<boolean>(false);
+
   return (
     <FadeIn>
       <main className="re-flex-column-align-center main">
@@ -51,9 +55,18 @@ export default function JoinRoom() {
                       bgcolor: "#0B0F1A",
                     },
                   }}
+                  slotProps={{
+                    input: {
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          {!clicked ? <SearchIcon sx={{ color: "#9AA3B2" }}  /> : <CircularProgress color="inherit" />}
+                        </InputAdornment>
+                      )
+                    }
+                  }}
                 ></TextField>
 
-                <Button variant="outlined" fullWidth sx={{ mt: 1.5 }}>
+                <Button onClick={() => setClicked(true)} variant="outlined" fullWidth sx={{ mt: 1.5 }}>
                   Join Room <KeyboardDoubleArrowRightRoundedIcon />{" "}
                 </Button>
               </Box>

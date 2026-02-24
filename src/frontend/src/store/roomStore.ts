@@ -38,7 +38,13 @@ export const useRoomStore = create<RoomState>()((set, get) => ({
 
     const userAuthority = await checkRoomExistence(roomId); // checkRoomExistence returns user's authority
 
-    if (userAuthority === null) return; // If room doesn't exist or user is not a member of the room then do not preceed
+    if (userAuthority === null) {
+      set({
+        connectionState: "ERROR",
+      })
+
+      return;
+    }; // If room doesn't exist or user is not a member of the room then do not preceed
 
     if (get().socket) return;
 

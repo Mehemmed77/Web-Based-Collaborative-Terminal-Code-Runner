@@ -1,11 +1,12 @@
 import { useEffect } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import type { Message } from "@protocol/ws";
 import Terminal from "../terminalUI/Terminal";
 import { useRoomStore } from "../store/roomStore";
 import { useAuthStore } from "../store/authStore";
 
 export default function Room() {
+  const navigate = useNavigate();
   const { roomId } = useParams();
   
   // AuthStore
@@ -17,6 +18,11 @@ export default function Room() {
   const connect = useRoomStore((s) => s.connect);
   const send = useRoomStore((s) => s.send);
   const disconnect = useRoomStore((s) => s.disconnect);
+
+  useEffect(() => {
+    console.log(connectionState);
+    if (connectionState === "ERROR") navigate("/not-authorized");
+  }, [connectionState]);
 
   useEffect(() => {
     connect(roomId, userId ?? "");

@@ -6,8 +6,10 @@ export default async function checkRoomExistence(roomId: string | undefined | nu
 
   const response = await apiFetch(`${BACKEND_SERVER_LINK}rooms/${roomId}`, "GET");
 
-  if (response.status !== 200) return null;
-
+  if (response.status !== 200) {
+    return null;
+  };
+  
   const json = await response.json();
 
   return json.isOwner;

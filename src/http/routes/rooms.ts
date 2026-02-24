@@ -9,8 +9,8 @@ router.get("/:roomId", requireAuth, async (req, res) => {
   const roomId = req.params.roomId as string;
   const ownerId = await findRoom(roomId);
 
-  if (!ownerId) {
-    return res.status(404);
+  if (ownerId == null) {
+    return res.status(404).json({ message: "Room not found" });
   }
 
   res.status(200).json({isOwner: req.userId === ownerId });

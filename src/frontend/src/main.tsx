@@ -9,6 +9,7 @@ import JoinRoom from "./rooms/JoinRoom";
 import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import AuthEntry from "./auth/AuthEntry";
+import UnauthorizedAccess from "./error/UnauthorizedAccess";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -22,6 +23,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/rooms/:roomId" element={<Room />} />
               <Route path="/rooms/joinRoom" element={<JoinRoom />} />
             </Route>
+            <Route path="/not-authorized" element={<UnauthorizedAccess />} />
           </Routes>
         </BrowserRouter>
     </ThemeProvider>
