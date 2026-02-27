@@ -19,6 +19,7 @@ router.get("/:roomId", requireAuth, async (req, res) => {
 router.post("/createRoom", requireAuth, (req, res) => {
   const context = req.body;
 
+  console.log(context);
   createRoom(context);
 
   res.status(200);

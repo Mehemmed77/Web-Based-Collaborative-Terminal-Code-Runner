@@ -1,11 +1,13 @@
+import { Typography } from "@mui/material";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 
 interface TypingTextProps {
   text: string;
+  color?: string
 }
 
-export default function TypingText({ text }: TypingTextProps) {
+export default function TypingText({ text, color }: TypingTextProps) {
   const [displayed, setDisplayed] = useState<string>("");
 
   useEffect(() => {
@@ -20,7 +22,7 @@ export default function TypingText({ text }: TypingTextProps) {
 
   return (
     <motion.span initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
-      {displayed}
+      <Typography color={`${color ? color : "white"}`}>{displayed}</Typography>
     </motion.span>
   );
 }

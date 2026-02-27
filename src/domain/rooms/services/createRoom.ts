@@ -9,6 +9,7 @@ import { activeRooms } from "@/shared/state/activeRoom.ts";
 const projectRoot = process.cwd();
 
 export default async function createRoom(payload: any) {
+  console.log(payload);
   if (!isCreateRoomPayload(payload)) {
     return;
   }
@@ -18,7 +19,11 @@ export default async function createRoom(payload: any) {
 
     const clients = new Map<string, ClientSocket>();
 
-    await pool.query("INSERT INTO rooms (room_id, owner_user_id) VALUES($1, $2)", [roomId, payload.userId]);
+    await pool.query("INSERT INTO rooms (room_id, owner_user_id, room_name) VALUES($1, $2, $3)", [
+      roomId,
+      payload.userId,
+      payload.roomName
+    ]);
 
     activeRooms.set(roomId, { roomId: roomId, clients: clients, ownerUserId: payload.userId });
 
@@ -26,7 +31,6 @@ export default async function createRoom(payload: any) {
 
     const folderPath = path.join(projectRoot, "workspaces", roomId);
     await fsPromises.mkdir(folderPath, { recursive: true });
-
   } catch (e: any) {
     console.log("Some error occurred: " + e);
   }

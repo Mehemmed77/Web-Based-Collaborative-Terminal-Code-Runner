@@ -17,70 +17,90 @@ import AccordionDetails from "@mui/material/AccordionDetails";
 import InputAdornment from "@mui/material/InputAdornment";
 import SearchIcon from "@mui/icons-material/Search";
 import CircularProgress from "@mui/material/CircularProgress";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import checkRoomExistence from "./checkRoomExistence";
 
 export default function JoinRoom() {
   const [clicked, setClicked] = useState<boolean>(false);
+
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleSumbit = async (e: React.FormEvent<HTMLElement>) => {
+    e.preventDefault();
+
+    setClicked(true);
+
+    const hasOwner = await checkRoomExistence(inputRef.current?.value);
+
+    console.log(hasOwner);
+    setClicked(false);
+  }
 
   return (
     <FadeIn>
       <main className="re-flex-column-align-center main">
         <ScaleUp>
-          <Box className="container re-flex-direction-column" mt={4} gap={5}>
-            <div className="re-flex-column-align-center">
-              <div className="re-flex-align-justify-center">
-                <TerminalLogo />
+          <form onSubmit={handleSumbit}>
+            <Box className="container re-flex-direction-column" mt={4} gap={5}>
+              <div className="re-flex-column-align-center">
+                <div className="re-flex-align-justify-center">
+                  <TerminalLogo />
+                </div>
+
+                <Typography variant="h5">Join a session</Typography>
+                <Typography variant="body1" align="center">
+                  <TypingText
+                    text="Enter #roomId or invite link to start your incredible experience with shared terminal"/>
+                </Typography>
               </div>
 
-              <Typography variant="h5">Join a session</Typography>
-              <Typography variant="body1" align="center">
-                <TypingText
-                  text="Enter #roomId or invite link to start your incredible experience with shared terminal"/>
-              </Typography>
-            </div>
+              <ReDivider />
 
-            <ReDivider />
+              <div>
+                <Box mb={2}>
+                  <Typography variant="body2">Room ID / URL</Typography>
+                  <TextField
+                    inputRef={inputRef}
+                    fullWidth
+                    placeholder="e.g. six-seven"
+                    variant="outlined"
+                    sx={{
+                      mt: 1,
+                      "& .MuiInputBase-input": {
+                        color: "#6F7787",
+                        bgcolor: "#0B0F1A",
+                      },
+                    }}
+                    slotProps={{
+                      input: {
+                        endAdornment: (
+                          <InputAdornment position="end">
+                            {!clicked ? <SearchIcon sx={{ color: "#9AA3B2" }}  /> : <CircularProgress color="inherit" />}
+                          </InputAdornment>
+                        )
+                      }
+                    }}
+                  ></TextField>
 
-            <div>
-              <Box mb={2}>
-                <Typography variant="body2">Room ID / URL</Typography>
-                <TextField
-                  fullWidth
-                  placeholder="e.g. six-seven"
-                  variant="outlined"
-                  sx={{
-                    mt: 1,
-                    "& .MuiInputBase-input": {
-                      color: "#6F7787",
-                      bgcolor: "#0B0F1A",
-                    },
-                  }}
-                  slotProps={{
-                    input: {
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          {!clicked ? <SearchIcon sx={{ color: "#9AA3B2" }}  /> : <CircularProgress color="inherit" />}
-                        </InputAdornment>
-                      )
-                    }
-                  }}
-                ></TextField>
+                  <Button type="submit" variant="outlined" fullWidth sx={{ mt: 1.5 }}>
+                    Join Room <KeyboardDoubleArrowRightRoundedIcon />{" "}
+                  </Button>
+                </Box>
 
-                <Button onClick={() => setClicked(true)} variant="outlined" fullWidth sx={{ mt: 1.5 }}>
-                  Join Room <KeyboardDoubleArrowRightRoundedIcon />{" "}
+                <Typography variant="body1" align="center" sx={{ mb: 1.5 }}>
+                  Or
+                </Typography>
+
+                <Button variant="text" fullWidth>
+                  {" "}
+                  <AddRoundedIcon /> Create New Room{" "}
                 </Button>
-              </Box>
 
-              <Typography variant="body1" align="center" sx={{ mb: 1.5 }}>
-                Or
-              </Typography>
+                <button className="floating-button"></button>
 
-              <Button variant="text" fullWidth>
-                {" "}
-                <AddRoundedIcon /> Create New Room{" "}
-              </Button>
-            </div>
-          </Box>
+              </div>
+            </Box>
+          </form>
         </ScaleUp>
 
         <Accordion sx={{ bgcolor: "transparent !important" }}>

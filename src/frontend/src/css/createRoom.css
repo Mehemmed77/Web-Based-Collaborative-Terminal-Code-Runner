@@ -1,0 +1,78 @@
+.main {
+  min-height: 100vh;
+  background: #0D1117;
+}
+
+.container {
+  width: 680px;
+  background: #111827;
+  padding: 32px;
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px rgba(255,255,255,0.04);
+}
+
+.section {
+  gap: 24px;
+}
+
+.field {
+  flex: 1;
+}
+
+.small-field {
+  max-width: 220px;
+}
+
+.badge {
+  background: #1F2937;
+  padding: 6px 12px;
+  border-radius: 999px;
+  color: #9AA3B2;
+}
+
+.visibility-toggle {
+  background: #0B0F1A;
+  padding: 4px;
+  border-radius: 10px;
+  gap: 6px;
+}
+
+.toggle {
+  background: transparent;
+  border: none;
+  color: #9AA3B2;
+  padding: 8px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.toggle.active {
+  background: #6D5DF6;
+  color: white;
+}
+
+.boot-options {
+  gap: 10px;
+}
+
+.chip {
+  background: #0B0F1A;
+  border: 1px solid #1F2937;
+  color: #9AA3B2;
+  padding: 8px 14px;
+  border-radius: 999px;
+  cursor: pointer;
+}
+
+.chip.active {
+  background: #1F2937;
+  color: white;
+}
+
+.primary-button {
+  background: linear-gradient(90deg, #7C5CFF, #6D5DF6);
+  padding: 14px;
+  border-radius: 10px;
+  font-weight: 600;
+  text-transform: none;
+}
