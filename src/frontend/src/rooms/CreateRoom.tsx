@@ -25,6 +25,7 @@ const inputStyles = {
 };
 
 export default function CreateRoom() {
+  
   const roomNameRef = useRef<HTMLInputElement>(null);
   const userId = useAuthStore((s) => s.userId);
 
