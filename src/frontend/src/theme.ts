@@ -3,57 +3,86 @@ import { createTheme } from "@mui/material/styles";
 const theme = createTheme({
   palette: {
     mode: "dark",
+
     background: {
-      default: "#0B0F1A",
-      paper: "#11162A",
+      default: "#1A1410",  // deep espresso
+      paper: "#221A15",    // reading surface
     },
+
     primary: {
-      main: "#4C8DFF",
-      contrastText: "#E6EAF2",
+      main: "#C6A15B",     // muted brass (academic accent)
+      contrastText: "#F3EFE6",
     },
+
     secondary: {
-      main: "#9AA3B2",
+      main: "#9C8B78",     // warm neutral
     },
+
     text: {
-      primary: "#E6EAF2",
-      secondary: "#9AA3B2",
-      disabled: "#6F7787",
+      primary: "#F3EFE6",   // warm paper white
+      secondary: "#C8BFB3",
+      disabled: "#7E7266",
     },
-    divider: "rgba(255,255,255,0.08)",
+
+    divider: "rgba(243,239,230,0.08)",
   },
 
   shape: {
-    borderRadius: 5,
+    borderRadius: 6,
   },
 
   typography: {
-    fontFamily: `"IBM Plex Mono", monospace`,
+    fontFamily: `"Inter", system-ui, sans-serif`,
+
     h5: {
-      fontSize: "1.55rem",
+      fontSize: "1.6rem",
       fontWeight: 600,
-      color: "#E6EAF2",
-    },
-    body1: {
-      fontSize: "0.95rem",
-      color: "#9AA3B2",
-      fontWeight: 500,
-      lineHeight: 1.5,
+      letterSpacing: "-0.01em",
+      color: "#F3EFE6",
     },
 
-    body2: {
-      fontSize: "0.85rem",
-      color: "#B0B8C8",
-      fontWeight: 300,
-      textTransform: "none",
+    // Reading text
+    body1: {
+      fontSize: "1rem",
+      lineHeight: 1.75,
+      color: "#7b7873",
+      fontWeight: 400,
     },
+    
+    body2: {
+      fontSize: "0.9rem",
+      color: "#9f968c",
+      fontWeight: 400,
+    },
+    
     caption: {
       fontSize: "0.75rem",
-      color: "#6F7787",
+      color: "#7E7266",
+      letterSpacing: "0.02em",
     },
+    
     button: {
       fontSize: "0.9rem",
       fontWeight: 500,
       textTransform: "none",
+    },
+  },
+
+  components: {
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: "none",
+        },
+      },
+    },
+
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 6,
+        },
+      },
     },
   },
 });

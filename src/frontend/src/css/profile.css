@@ -1,0 +1,12 @@
+.grid-container {
+    border: 2px solid red;
+    max-width: 900px;
+    margin: 20px auto;
+}
+
+.session-paper {
+    width: fit-content;
+    background-color: rgb(234, 234, 234);
+    padding: 16px;
+    border-radius: 16px;
+}

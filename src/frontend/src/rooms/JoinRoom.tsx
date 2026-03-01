@@ -92,8 +92,7 @@ export default function JoinRoom() {
                 </Typography>
 
                 <Button variant="text" fullWidth>
-                  {" "}
-                  <AddRoundedIcon /> Create New Room{" "}
+                  <AddRoundedIcon /> Create New Room
                 </Button>
 
                 <button className="floating-button"></button>

@@ -10,6 +10,7 @@ import { CssBaseline, ThemeProvider } from "@mui/material";
 import theme from "./theme";
 import AuthEntry from "./auth/AuthEntry";
 import UnauthorizedAccess from "./error/UnauthorizedAccess";
+import Profile from "./home/Profile";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -24,6 +25,7 @@ createRoot(document.getElementById("root")!).render(
               <Route path="/rooms/joinRoom" element={<JoinRoom />} />
             </Route>
             <Route path="/not-authorized" element={<UnauthorizedAccess />} />
+            <Route path="/home" element={<Profile />} />
           </Routes>
         </BrowserRouter>
     </ThemeProvider>
