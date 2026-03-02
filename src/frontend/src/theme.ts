@@ -38,20 +38,27 @@ const theme = createTheme({
       fontSize: "1.6rem",
       fontWeight: 600,
       letterSpacing: "-0.01em",
-      color: "#F3EFE6",
+      color: "#1C1917",
+    },
+
+    h6: {
+      fontSize: "1.2rem",
+      fontWeight: 600,
+      letterSpacing: "-0.01em",
+      color: "#1C1917",
     },
 
     // Reading text
     body1: {
       fontSize: "1rem",
       lineHeight: 1.75,
-      color: "#7b7873",
+      color: "#C5BDB2",
       fontWeight: 400,
     },
     
     body2: {
       fontSize: "0.9rem",
-      color: "#9f968c",
+      color: "#A09890",
       fontWeight: 400,
     },
     
