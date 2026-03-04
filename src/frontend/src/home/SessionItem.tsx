@@ -1,12 +1,12 @@
 import Box from "@mui/material/Box";
-import img from "../images/comp-networks.png";
 import { Typography } from "@mui/material";
 
 interface SessionItemInterface {
   title: string;
+  picUrl: string;
 }
 
-export default function SessionItem({ title }: SessionItemInterface) {
+export default function SessionItem({ title, picUrl }: SessionItemInterface) {
   return (
     <Box
       className="session-paper re-flex-direction-column"
@@ -15,7 +15,7 @@ export default function SessionItem({ title }: SessionItemInterface) {
       alignItems="center"
     >
       <Box>
-        <img src={img} width={200} height={200} />
+        <img src={`/src/images/${picUrl}`} width={200} />
       </Box>
       <Box>
         <Typography variant="h6" fontWeight="bold">
@@ -24,7 +24,6 @@ export default function SessionItem({ title }: SessionItemInterface) {
       </Box>
       <Box display="flex">
         <Typography variant="body2">4 items</Typography>
-        <Box>{/* <CustomSpeedDial /> */}</Box>
       </Box>
     </Box>
   );

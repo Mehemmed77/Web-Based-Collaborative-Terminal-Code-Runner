@@ -33,6 +33,12 @@ const theme = createTheme({
 
   typography: {
     fontFamily: `"Inter", system-ui, sans-serif`,
+    h3: {
+      fontSize: "2rem",
+      fontWeight: 600,
+      letterSpacing: "0.01em",
+      color: "#F0EBE0"
+    },
 
     h5: {
       fontSize: "1.6rem",
@@ -58,7 +64,7 @@ const theme = createTheme({
     
     body2: {
       fontSize: "0.9rem",
-      color: "#A09890",
+      color: "#191919",
       fontWeight: 400,
     },
     

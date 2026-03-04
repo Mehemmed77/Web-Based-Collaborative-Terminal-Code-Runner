@@ -1,8 +1,10 @@
 .grid-container {
-    border: 2px solid red;
     max-width: 1000px;
     margin: 20px auto;
-    
+}
+
+.grid-items {
+    width: fit-content !important;
 }
 
 .session-paper {
@@ -13,8 +15,9 @@
 }
 
 .control-panel {
-    position: fixed;
-    bottom: 0;
-    right: 50%;
     width: 100%; /* Ensures it spans the full width */
+    margin-block: 16px;
+    bottom: 0;
+    left: 45%;
+    position: fixed;
 }
