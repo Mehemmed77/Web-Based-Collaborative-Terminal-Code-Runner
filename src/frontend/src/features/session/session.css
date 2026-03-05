@@ -1,0 +1,31 @@
+.grid-container {
+    max-width: 1200px;
+    margin: 20px auto;
+}
+
+.grid-items {
+    width: fit-content !important;
+}
+
+.session-paper {
+    width: fit-content;
+    padding: 16px;
+    border-radius: 16px;
+}
+
+.control-panel {
+    width: 100%; /* Ensures it spans the full width */
+    margin-block: 16px;
+    bottom: 0;
+    left: 88%;
+    position: fixed;
+}
+
+.paper-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    color: #C6A15B;
+    cursor: pointer;
+    font-size: 30px !important;
+}

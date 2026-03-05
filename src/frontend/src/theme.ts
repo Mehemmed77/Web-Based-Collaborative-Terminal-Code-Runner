@@ -48,10 +48,10 @@ const theme = createTheme({
     },
 
     h6: {
-      fontSize: "1.2rem",
+      fontSize: "1rem",
       fontWeight: 600,
       letterSpacing: "-0.01em",
-      color: "#1C1917",
+      color: "#C5BDB2",
     },
 
     // Reading text
